@@ -1,4 +1,5 @@
-GaiaServer
+#GaiaServer
+
 Welcome! This is my very first project, and it's named from my beloved dog :D
 
 This is an "easy-peasy" server for client management for small purposes. I started developing it firstly for knowledge and practice, as well as interacting with the Git community by turning it an open project.
