@@ -11,7 +11,8 @@ GaiaServer uses the *Postgres* database, which can be managed from *Pgadmin4*.
 
 All packages you'll need are set in *requirements.txt*
 
-This is a public project made out of a private one. On it, I use *AWS Cloud* to store my database, once the original project can be found at: https://gaiasrv.herokuapp.com/
+This is a public project made out of a private one. On it, I use *AWS Cloud* to store my database, and Heroku for deploying.
+The original project can be found at: https://gaiasrv.herokuapp.com/
 
 Looking forward for improvements and feedback from this incredible community! I'll continue developing the original project, and once _we_ accomplish more, I'll be updating this one.
 
