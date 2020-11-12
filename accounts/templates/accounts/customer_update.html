@@ -1,0 +1,44 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% block content %}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+  <div class="row">
+	<div class="col-sm-3">
+		<div class="card card-body">
+			<h3>Company</h3><br>
+			<fieldset disabled>
+				<label>Name:</label>
+				<p>{{form.name}}</p>
+				<label>Contact:</label>
+				<p>{{form.main_contact}}</p>
+				<label>Email:</label>
+				<p>{{form.main_email}}</p>
+				<label>Phone:</label>
+				<p>{{form.phone}}</p>
+			</fieldset>
+		</div>
+	</div>
+	<div class="col-sm-3">	
+		<div class="card card-body">
+			<h3>New Data</h3><br>
+			<form action="" method="POST">
+				{% csrf_token %}
+				<label>New Name:</label>
+				<p>{{form.name}}</p>
+				<label>New Contact:</label>
+				<p>{{form.main_contact}}</p>
+				<label>New Email:</label>
+				<p>{{form.main_email}}</p>
+				<label>New Phone:</label>
+				<p>{{form.phone}}</p>
+				<input type="submit" class="btn btn-block btn-success" value="Update">
+			</form>
+		</div>
+	</div>
+  </div>
+</main>
+
+
+
+{% endblock %}
