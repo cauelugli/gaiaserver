@@ -35,6 +35,8 @@ const Home = ({
     };
   }, [onMount, onUnmount]);
 
+  
+
   return (
     <>
       <Grid2 container justifyContent={homePagePreferences === 3 && "center"}>

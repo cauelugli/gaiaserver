@@ -52,12 +52,12 @@ export default function Agenda({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data.agenda);
-        setMinTime(config.data.agenda.minTime);
-        setMaxTime(config.data.agenda.maxTime);
-        setEventTypes(config.data.agenda.eventTypes);
+        setConfigData(config.data[0].agenda);
+        setMinTime(config.data[0].agenda.minTime);
+        setMaxTime(config.data[0].agenda.maxTime);
+        setEventTypes(config.data[0].agenda.eventTypes);
         setShowServiceColorOnEvents(
-          config.data.agenda.showServiceColorOnEvents
+          config.data[0].agenda.showServiceColorOnEvents
         );
       } catch (error) {
         console.error("Error fetching data:", error);

@@ -106,6 +106,14 @@ export default function ServicePlanList({ onSelectedServicesChange }) {
                         {option.name}
                         {"\u00A0"}
                       </Typography>
+                      <Typography
+                        fontWeight="bold"
+                        sx={{
+                          color: option.department.color,
+                        }}
+                      >
+                        ({option.department.name})
+                      </Typography>
 
                       {option._id === selectedItemId && (
                         <IconButton

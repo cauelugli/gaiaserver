@@ -50,11 +50,11 @@ export default function Customization({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data.customization);
-        setMainColor(config.data.customization.mainColor);
-        setFontColor(config.data.customization.fontColor);
-        setLogo(config.data.customization.logo);
-        setLogoBlack(config.data.customization.logoBlack);
+        setConfigData(config.data[0].customization);
+        setMainColor(config.data[0].customization.mainColor);
+        setFontColor(config.data[0].customization.fontColor);
+        setLogo(config.data[0].customization.logo);
+        setLogoBlack(config.data[0].customization.logoBlack);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -300,7 +300,7 @@ export default function Customization({ onClose }) {
                       <label htmlFor="logoInput" style={{ cursor: "pointer" }}>
                         {logo && !newLogo ? (
                           <img
-                            src={`http://localhost:8080/static/${logo}`}
+                            src={`http://localhost:3000/static/${logo}`}
                             alt="Logotipo"
                             style={{
                               width: "auto",
@@ -379,7 +379,7 @@ export default function Customization({ onClose }) {
                       >
                         {logoBlack && !newLogoBlack ? (
                           <img
-                            src={`http://localhost:8080/static/${logoBlack}`}
+                            src={`http://localhost:3000/static/${logoBlack}`}
                             alt="Logotipo com Fundo"
                             style={{
                               width: "auto",

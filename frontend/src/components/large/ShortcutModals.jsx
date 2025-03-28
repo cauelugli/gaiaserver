@@ -21,6 +21,9 @@ const ShortcutModals = ({
     addJobToCustomer: "",
     addSale: "",
     addSaleToCustomer: "",
+    addUser: "",
+    addManager: "",
+    addDepartment: "",
   };
 
   const SelectedComponent = ACTION_COMPONENTS[action] || null;

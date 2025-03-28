@@ -28,6 +28,8 @@ router.put("/", async (req, res) => {
 
   const processedFields = parseReqFields(req.body.fields, req.body);
 
+  // console.log("req.body", req.body);
+
   // const createdLog = await new Log({
   //   source: req.body.sourceId,
   //   target: logTarget,
@@ -43,6 +45,98 @@ router.put("/", async (req, res) => {
       { $set: processedFields },
       { new: true }
     );
+
+    switch (req.body.model) {
+      case "User":
+        if (processedFields.department !== prevData.department) {
+          mainQueue.add({
+            type: "swapDepartments",
+            data: {
+              userId: req.body.targetId,
+              model: req.body.model,
+              newDepartment: req.body.fields.department,
+              oldDepartment: prevData.department,
+            },
+          });
+        }
+
+        if (
+          processedFields.position !== "" &&
+          processedFields.position !== prevData.position
+        ) {
+          mainQueue.add({
+            type: "swapPositions",
+            data: {
+              userId: req.body.targetId,
+              newPosition: processedFields.position,
+              oldPosition: prevData.position,
+            },
+          });
+        }
+        break;
+
+      case "Job":
+        if (processedFields.worker !== prevData.worker) {
+          // notify instead
+          // mainQueue.add({
+          //   type: "swapWorker",
+          //   data: {
+          //     jobId: updatedItem._id.toString(),
+          //     newAssignee: updatedItem.worker,
+          //     oldAssignee: req.body.prevData.worker,
+          //   },
+          // });
+        }
+        break;
+
+      case "Department":
+        const areArraysEqual = (arr1, arr2) => {
+          if (arr1.length !== arr2.length) return false;
+          return (
+            arr1.every((item) => arr2.includes(item)) &&
+            arr2.every((item) => arr1.includes(item))
+          );
+        };
+
+        if (
+          !areArraysEqual(processedFields.selectedMembers, prevData.members)
+        ) {
+          const updatedMembers = processedFields.selectedMembers || [];
+          const prevMembers = prevData.members || [];
+
+          const addUsers = updatedMembers.filter(
+            (member) => !prevMembers.includes(member)
+          );
+
+          const removeUsers = prevMembers.filter(
+            (member) => !updatedMembers.includes(member)
+          );
+
+          mainQueue.add({
+            type: "swapMembers",
+            data: {
+              departmentId: updatedItem._id.toString(),
+              addUsers,
+              removeUsers,
+            },
+          });
+        }
+
+        if (processedFields.manager !== prevData.manager) {
+          mainQueue.add({
+            type: "swapManagers",
+            data: {
+              departmentId: updatedItem._id.toString(),
+              newManagerId: processedFields.manager,
+              oldManagerId: prevData.manager,
+            },
+          });
+        }
+        break;
+
+      default:
+        break;
+    }
 
     mainQueue.add({ type: "refreshIdIndexList" });
 
@@ -66,12 +160,12 @@ router.post("/baseProduct", async (req, res) => {
     );
 
     // Registrar no log
-    // await defineModel("Log").create({
-    //   source: updatedBy,
-    //   target: id,
-    //   label: "Product",
-    //   type: "edit",
-    // });
+    await defineModel("Log").create({
+      source: updatedBy,
+      target: id,
+      label: "Product",
+      type: "edit",
+    });
 
     res.json(updatedProduct);
   } catch (error) {

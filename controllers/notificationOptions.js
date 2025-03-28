@@ -5,8 +5,12 @@ const translatedLogTypes = [
   { key: "edit", value: "Edição" },
   { key: "archive", value: "Arquivamento" },
   { key: "unarchive", value: "Desarquivamento" },
+  { key: "interaction", value: "Interação" },
+  { key: "challenge", value: "Contestação" },
   { key: "resolve", value: "Resolução" },
   { key: "requestBuy", value: "Resquisição de Compra" },
+  { key: "requestApproval", value: "Resquisição de Aprovação" },
+  { key: "approveRequest", value: "Aprovação de Requisição" },
 ];
 
 const translatedMethods = [
@@ -16,11 +20,17 @@ const translatedMethods = [
 ];
 
 const translatedModels = [
+  { key: "User", value: "Colaborador" },
   { key: "Customer", value: "Cliente Empresa" },
   { key: "Client", value: "Cliente Pessoa Física" },
   { key: "Service", value: "Serviço" },
+  { key: "Department", value: "Departamento" },
+  { key: "Group", value: "Grupo" },
   { key: "ServicePlan", value: "Plano de Serviços" },
   { key: "Product", value: "Produto" },
+  { key: "Operator", value: "Operador" },
+  { key: "Role", value: "Perfil de Acesso" },
+  { key: "Position", value: "Cargo" },
   { key: "Sale", value: "Venda" },
 ];
 

@@ -23,7 +23,7 @@ const api = axios.create({
 const RequestBuyForm = (props) => {
   const [quantity, setQuantity] = useState(1);
 
-  const handleRequestBuy = async () => {
+  const handleRequestApproval = async () => {
     try {
       const res = await api.put(`/actions/requestBuy/`, {
         requestedBy: props.userId,
@@ -82,7 +82,7 @@ const RequestBuyForm = (props) => {
       </DialogTitle>
       <>
         <Avatar
-          src={`http://localhost:8080/static${props.selectedItem.images[0]}`}
+          src={`http://localhost:3000/static${props.selectedItem.images[0]}`}
           sx={{ width: 128, height: 128, my: 1 }}
         />
         <Grid2
@@ -118,7 +118,7 @@ const RequestBuyForm = (props) => {
         <Button
           variant="contained"
           color="success"
-          onClick={handleRequestBuy}
+          onClick={handleRequestApproval}
           sx={{ mr: 2 }}
         >
           Confirmar

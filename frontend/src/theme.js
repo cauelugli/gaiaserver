@@ -6,7 +6,9 @@ const api = axios.create({
 });
 
 const getUserPreferences = async () => {
-  const userPreferences = await api.get(`/userPreferences`);
+  const userData = JSON.parse(sessionStorage.getItem("userData"));
+  const userId = userData?._id;
+  const userPreferences = await api.get(`/userPreferences/${userId}`);
   return {
     paletteColor: userPreferences.data?.paletteColor || "#ffffff",
     fontFamilyTitle:

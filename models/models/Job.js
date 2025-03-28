@@ -9,6 +9,9 @@ jobSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  createdBy: {
+    type: String,
+  },
   customer: {
     type: String,
     required: true,
@@ -49,6 +52,9 @@ jobSchema = new mongoose.Schema({
   resolvedAt: {
     type: String,
   },
+  resolvedBy: {
+    type: String,
+  },
   scheduledInfo: {
     type: Object,
   },
@@ -64,11 +70,13 @@ jobSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    default: "Aberto"
   },
   title: {
     type: String,
     required: true,
+  },
+  worker: {
+    type: String,
   },
 });
 

@@ -58,6 +58,62 @@ const notificationSchema = new Schema({
       default: [],
     },
   },
+  department: {
+    departmentIsCreated: {
+      type: Array,
+      default: [],
+    },
+    departmentIsEdited: {
+      type: Array,
+      default: [],
+    },
+    departmentIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
+  group: {
+    groupIsCreated: {
+      type: Array,
+      default: [],
+    },
+    groupIsEdited: {
+      type: Array,
+      default: [],
+    },
+    groupIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
+  operator: {
+    operatorIsCreated: {
+      type: Array,
+      default: [],
+    },
+    operatorIsEdited: {
+      type: Array,
+      default: [],
+    },
+    operatorIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
+  position: {
+    positionIsCreated: {
+      type: Array,
+      default: [],
+    },
+    positionIsEdited: {
+      type: Array,
+      default: [],
+    },
+    positionIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
   product: {
     productIsCreated: {
       type: Array,
@@ -68,6 +124,20 @@ const notificationSchema = new Schema({
       default: [],
     },
     productIsDeleted: {
+      type: Array,
+      default: [],
+    },
+  },
+  role: {
+    roleIsCreated: {
+      type: Array,
+      default: [],
+    },
+    roleIsEdited: {
+      type: Array,
+      default: [],
+    },
+    roleIsDeleted: {
       type: Array,
       default: [],
     },

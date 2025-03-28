@@ -29,8 +29,8 @@ export default function Tables({ onClose }) {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data.tables);
-        setTableStates(config.data.tables);
+        setConfigData(config.data[0].tables);
+        setTableStates(config.data[0].tables);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

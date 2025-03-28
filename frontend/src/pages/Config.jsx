@@ -28,6 +28,7 @@ import { configModalOptions } from "../options/configModalOptions";
 import Admin from "../forms/config/Admin";
 
 export default function Config({
+  topBar,
   mainColor,
   userId,
   userName,
@@ -53,7 +54,7 @@ export default function Config({
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data);
+        setConfigData(config.data[0]);
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -109,7 +110,7 @@ export default function Config({
   }
 
   return (
-    <Box sx={{ width: "100%", minHeight: "50vw" }}>
+    <Box sx={{ width: topBar ? "105%" : "100%", minHeight: "50vw" }}>
       <Grid2 container direction="row" sx={{ mb: 2 }}>
         <Typography
           sx={{ fontSize: 25, ml: 2, mr: 1, fontWeight: "bold" }}
@@ -133,10 +134,9 @@ export default function Config({
       {configData ? (
         <Grid2
           container
-          rowSpacing={1}
+          rowSpacing={2}
           columnSpacing={1}
           justifyContent="center"
-          sx={{ m: 1 }}
         >
           {options
             .filter((config) => showAdvancedConfig || config.isBasic)
@@ -187,39 +187,14 @@ export default function Config({
         </>
       )}
 
-      <Grid2
-        container
-        direction="row"
-        alignItems="center"
-        justifyContent="center"
-      >
+      {/* do this right please.... */}
+      {userName === "Admin" && (
         <Grid2
           container
-          direction="column"
+          direction="row"
           alignItems="center"
           justifyContent="center"
-          sx={{
-            mt: 2,
-            mx: 1,
-            width: showAdvancedConfig ? "15vw" : "20vw",
-            height: "10vw",
-            border: `1px solid ${mainColor}88`,
-            borderRadius: 2,
-            transition: "background-color 0.3s, color 0.3s",
-            backgroundColor: `grey`,
-            color: `${mainColor}88`,
-            cursor: "pointer",
-            "&:hover": {
-              color: `white`,
-              backgroundColor: `${mainColor}88`,
-            },
-          }}
-          onClick={() => setOpenAdminModal(true)}
         >
-          {<icons.AttributionIcon sx={{ fontSize: "4vw" }} />}
-          <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>Admin</Typography>
-        </Grid2>{" "}
-        <Link to={"/log"} style={{ textDecoration: "none" }}>
           <Grid2
             container
             direction="column"
@@ -233,7 +208,7 @@ export default function Config({
               border: `1px solid ${mainColor}88`,
               borderRadius: 2,
               transition: "background-color 0.3s, color 0.3s",
-              backgroundColor: `grey`,
+              backgroundColor: `white`,
               color: `${mainColor}88`,
               cursor: "pointer",
               "&:hover": {
@@ -241,14 +216,42 @@ export default function Config({
                 backgroundColor: `${mainColor}88`,
               },
             }}
+            onClick={() => setOpenAdminModal(true)}
           >
-            {<icons.PlagiarismIcon sx={{ fontSize: "4vw" }} />}
-            <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>
-              Logs do Sistema
-            </Typography>
-          </Grid2>
-        </Link>
-      </Grid2>
+            {<icons.AttributionIcon sx={{ fontSize: "4vw" }} />}
+            <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>Admin</Typography>
+          </Grid2>{" "}
+          <Link to={"/log"} style={{ textDecoration: "none" }}>
+            <Grid2
+              container
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+              sx={{
+                mt: 2,
+                mx: 1,
+                width: showAdvancedConfig ? "15vw" : "20vw",
+                height: "10vw",
+                border: `1px solid ${mainColor}88`,
+                borderRadius: 2,
+                transition: "background-color 0.3s, color 0.3s",
+                backgroundColor: `white`,
+                color: `${mainColor}88`,
+                cursor: "pointer",
+                "&:hover": {
+                  color: `white`,
+                  backgroundColor: `${mainColor}88`,
+                },
+              }}
+            >
+              {<icons.PlagiarismIcon sx={{ fontSize: "4vw" }} />}
+              <Typography sx={{ mt: 1, fontSize: "1.3vw" }}>
+                Logs do Sistema
+              </Typography>
+            </Grid2>
+          </Link>
+        </Grid2>
+      )}
 
       <Dialog
         open={!!openModal}

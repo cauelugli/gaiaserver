@@ -22,6 +22,18 @@ router.get("/", async (req, res) => {
   try {
     let data;
     data = await Model.find();
+
+    switch (model) {
+      case "User":
+        data = data.map((user) => {
+          const { password, notifications, ...rest } = user.toObject();
+          return rest;
+        });
+        break;
+      default:
+        break;
+    }
+
     res.status(200).json(data);
   } catch (err) {
     console.log("\nerr", err, "\n");
@@ -34,6 +46,7 @@ router.get("/reports", async (req, res) => {
   let models = [];
   try {
     const modelsToCheck = [
+      "User",
       "Job",
       "Sale",
       "StockEntry",
@@ -45,18 +58,23 @@ router.get("/reports", async (req, res) => {
       const model = defineModel(modelName);
       let data;
 
-      if (modelName === "Job") {
+      if (modelName === "User") {
+        data = await model.find({}, { createdAt: 1, _id: 1 });
+      } else if (modelName === "Job") {
         data = await model.find(
           {},
           {
             status: 1,
             title: 1,
-            customer: 1,
+            customer: 1, // Incluído para associar ao cliente
             service: 1,
+            worker: 1,
             address: 1,
             scheduledTo: 1,
             scheduleTime: 1,
+            createdBy: 1,
             createdAt: 1,
+            resolvedBy: 1,
             resolvedAt: 1,
             resolution: 1,
             products: 1,
@@ -73,9 +91,12 @@ router.get("/reports", async (req, res) => {
             status: 1,
             products: 1,
             customer: 1,
+            seller: 1,
             deliveryScheduledTo: 1,
             deliveryAddress: 1,
+            createdBy: 1,
             createdAt: 1,
+            resolvedBy: 1,
             resolvedAt: 1,
             resolution: 1,
             number: 1,
@@ -88,7 +109,9 @@ router.get("/reports", async (req, res) => {
           {
             status: 1,
             items: 1,
+            createdBy: 1,
             createdAt: 1,
+            resolvedBy: 1,
             resolvedAt: 1,
             number: 1,
             _id: 1,
@@ -150,11 +173,32 @@ const getRequestsPerCustomer = async (models) => {
   return requestsPerCustomer;
 };
 
+// GET USER'S NOTIFICATIONS
+router.get("/notifications/:userId", async (req, res) => {
+  const { userId } = req.params;
+  const Model = defineModel("User");
+
+  try {
+    // Encontra o usuário e retorna apenas a lista de notificações
+    const user = await Model.findById(userId, "notifications");
+
+    if (!user) {
+      return "";
+      // that's life
+    }
+
+    res.status(200).json(user.notifications);
+  } catch (err) {
+    console.log("\nerr", err, "\n");
+    res.status(500).json(err);
+  }
+});
+
 // GET MISSING CORE DATA
 router.get("/coreData", async (req, res) => {
   let missingCoreData = [];
   try {
-    const modelsToCheck = ["Customer"];
+    const modelsToCheck = ["User", "Department", "Service", "Customer", "Role"];
 
     for (const modelName of modelsToCheck) {
       const model = defineModel(modelName);
@@ -172,13 +216,15 @@ router.get("/coreData", async (req, res) => {
 });
 
 // GET USER AGENDA
-router.get("/userAgenda", async (req, res) => {
+router.get("/userAgenda/:userId", async (req, res) => {
+  const { userId } = req.params;
+
   const Job = defineModel("Job");
   const Sale = defineModel("Sale");
 
   try {
-    const jobs = await Job.find();
-    const sales = await Sale.find();
+    const jobs = await Job.find({ worker: userId });
+    const sales = await Sale.find({ seller: userId });
 
     const userAgenda = {
       jobs: jobs.map((job) => ({

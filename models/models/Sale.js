@@ -9,6 +9,9 @@ saleSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  createdBy: {
+    type: String,
+  },
   customer: {
     type: Object,
     required: true,
@@ -67,9 +70,14 @@ saleSchema = new mongoose.Schema({
   resolvedAt: {
     type: String,
   },
+  resolvedBy: {
+    type: String,
+  },
+  seller: {
+    type: String,
+  },
   status: {
     type: String,
-    default: "Aberto"
   },
 });
 

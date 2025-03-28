@@ -1,13 +1,13 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const countersSchema = new mongoose.Schema({
-  job: { type: Number, default: 0 },
-  sale: { type: Number, default: 0 },
-  stockEntry: { type: Number, default: 0 },
-  financeIncome: { type: Number, default: 0 },
-  financeOutcome: { type: Number, default: 0 },
+  job: { type: Number },
+  sale: { type: Number },
+  stockEntry: { type: Number },
+  financeIncome: { type: Number },
+  financeOutcome: { type: Number },
 });
 
-const Counters = mongoose.model("Counters", countersSchema);
+const Counters = mongoose.model('Counters', countersSchema);
 
 module.exports = Counters;

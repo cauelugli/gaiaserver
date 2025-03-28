@@ -24,6 +24,8 @@ import CardModel from "../components/cards/CardModel";
 import ProductCardModel from "../components/cards/ProductCardModel";
 import ProductsTableButton from "../components/small/buttons/ProductsTableButton";
 
+import { getDataForPage } from "../../../controllers/functions/overallFunctions";
+
 import TableFiltersBar from "../components/large/TableFiltersBar";
 // import ChartReports from "../components/small/ChartReports";
 
@@ -41,24 +43,6 @@ function CustomTabPanel(props) {
   );
 }
 
-function isArray(data) {
-  return Array.isArray(data) ? data : [];
-}
-
-function getDataForPage(itemsResponse, page, model) {
-  const filters = {
-    products: (item) => item.name,
-    stock: (item) => (model === "Product" ? item.name : true),
-  };
-
-  const filterFunc = filters[page] || (() => true);
-
-  let filteredItems = isArray(itemsResponse.data).filter(filterFunc);
-  const baseItems = isArray(itemsResponse.data).filter((item) => !item.name);
-
-  return { filteredItems, baseItems };
-}
-
 export default function PageModel(props) {
   const appData = useAppData();
   const [isLoading, setIsLoading] = React.useState(true);
@@ -72,6 +56,7 @@ export default function PageModel(props) {
   const [tableFilters, setTableFilters] = React.useState({});
   const [multiple, setMultiple] = React.useState(false);
   const [selectedMultipleItems, setSelectedMultipleItems] = React.useState([]);
+  const [highlightSelfUser, setHighlightSelfUser] = React.useState(false);
   const [highlightArchived, setHighlightArchived] = React.useState(false);
   const [highlightResolved, setHighlightResolved] = React.useState(false);
 
@@ -79,7 +64,7 @@ export default function PageModel(props) {
 
   // eslint-disable-next-line no-unused-vars
   const [configTables, setConfigTables] = React.useState(
-    props.configData.tables || {}
+    props.configData.tables
   );
 
   const handleChange = (noArgument, newValue) => {
@@ -109,6 +94,12 @@ export default function PageModel(props) {
   const filteredItems = React.useMemo(() => {
     let result = items;
 
+    if (highlightSelfUser) {
+      result = result.filter(
+        (item) => item.worker === props.userId || item.seller === props.userId
+      );
+    }
+
     if (!highlightArchived && !highlightResolved) {
       result = result.filter(
         (item) => item.status !== "Arquivado" && item.status !== "Resolvido"
@@ -128,7 +119,13 @@ export default function PageModel(props) {
     }
 
     return result;
-  }, [items, highlightArchived, highlightResolved]);
+  }, [
+    items,
+    highlightSelfUser,
+    highlightArchived,
+    highlightResolved,
+    props.userId,
+  ]);
 
   React.useEffect(() => {
     if (props.item.page !== currentPage) {
@@ -138,6 +135,7 @@ export default function PageModel(props) {
       setMultiple(false);
       setSelectedMultipleItems([]);
       setNewDataRefreshButton(true);
+      setHighlightSelfUser(false);
     }
 
     const fetchData = async () => {
@@ -206,6 +204,9 @@ export default function PageModel(props) {
   }
 
   const shouldDisplayTab = (page, tabIndex, configTables) => {
+    if (page === "departments" && tabIndex === 1) {
+      return configTables.groups;
+    }
     if (page === "customers" && tabIndex === 0) {
       return configTables.customerCustomer;
     }
@@ -277,7 +278,7 @@ export default function PageModel(props) {
           }
           TabIndicatorProps={{
             style: {
-              backgroundColor: props?.configCustomization?.mainColor,
+              backgroundColor: props.configCustomization.mainColor,
             },
           }}
           sx={{ width: props.topBar ? "103%" : "102%" }}
@@ -293,7 +294,7 @@ export default function PageModel(props) {
                     color: "black",
                     "&.Mui-selected": {
                       color: "black",
-                      backgroundColor: `${props.configCustomization?.mainColor}42`,
+                      backgroundColor: `${props.configCustomization.mainColor}42`,
                       borderRadius: "15px 15px 0 0",
                     },
                   }}
@@ -312,7 +313,7 @@ export default function PageModel(props) {
                         color: "black",
                         "&.Mui-selected": {
                           color: "black",
-                          backgroundColor: `${props.configCustomization?.mainColor}42`,
+                          backgroundColor: `${props.configCustomization.mainColor}42`,
                           borderRadius: "15px 15px 0 0",
                         },
                       }}
@@ -333,14 +334,15 @@ export default function PageModel(props) {
             <TableFiltersBar
               tableFilters={tableFilters}
               setTableFilters={setTableFilters}
-              mainColor={props.configCustomization?.mainColor}
+              mainColor={props.configCustomization.mainColor}
               page={props.item.page}
               // tabIndex={value}
               tabIndex={
                 props.item.page === "customers" &&
                 !configTables.customerCustomer
                   ? value + 1
-                  : props.item.page === "requests" && !configTables.requestJob
+                  : props.item.page === "requests" &&
+                    !configTables.requestJob
                   ? value + 1
                   : value
               }
@@ -354,7 +356,7 @@ export default function PageModel(props) {
               tableOrCard={props.tableOrCardView}
               setUserPreferences={props.setUserPreferences}
               cardSize={props.cardSize}
-              mainColor={props.configCustomization?.mainColor}
+              mainColor={props.configCustomization.mainColor}
               multiple={multiple}
               setMultiple={setMultiple}
               selectedMultipleItems={selectedMultipleItems}
@@ -363,6 +365,8 @@ export default function PageModel(props) {
                 props.item.models[props.item.page !== currentPage ? 0 : value]
               }
               page={props.item.page}
+              highlightSelfUser={highlightSelfUser}
+              setHighlightSelfUser={setHighlightSelfUser}
               highlightResolved={highlightResolved}
               setHighlightResolved={setHighlightResolved}
               useArchiveList={appData.useArchiveList?.includes(
@@ -392,7 +396,7 @@ export default function PageModel(props) {
                     <TableModel
                       api={props.api}
                       themeBGColor={props.palette.background["default"]}
-                      mainColor={props.configCustomization?.mainColor}
+                      mainColor={props.configCustomization.mainColor}
                       page={props.item.page}
                       mappedItem={item}
                       items={items.filter(
@@ -402,6 +406,8 @@ export default function PageModel(props) {
                       tableColumns={item.fields}
                       userName={props.userName}
                       userId={props.userId}
+                      userRole={props.userRole}
+                      userDepartment={props.userDepartment}
                       configData={props.configData[props.item.page]}
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}
@@ -450,7 +456,7 @@ export default function PageModel(props) {
                     <TableModel
                       api={props.api}
                       themeBGColor={props.palette.background["default"]}
-                      mainColor={props.configCustomization?.mainColor}
+                      mainColor={props.configCustomization.mainColor}
                       page={props.item.page}
                       items={filteredItems}
                       itemIndex={
@@ -474,6 +480,8 @@ export default function PageModel(props) {
                       }
                       userName={props.userName}
                       userId={props.userId}
+                      userRole={props.userRole}
+                      userDepartment={props.userDepartment}
                       configData={props.configData[props.item.page]}
                       refreshData={refreshData}
                       setRefreshData={setRefreshData}
@@ -482,6 +490,18 @@ export default function PageModel(props) {
                       multiple={multiple}
                       selectedMultipleItems={selectedMultipleItems}
                       setSelectedMultipleItems={setSelectedMultipleItems}
+                      requestsApproverManager={
+                        props.configData["requests"].requestsApproverManager
+                      }
+                      stockApproverManager={
+                        props.configData["stock"].stockEntriesApproverManager
+                      }
+                      requestsApproverAlternate={
+                        props.configData["requests"].requestsApproverAlternate
+                      }
+                      stockApproverAlternate={
+                        props.configData["stock"].stockEntriesApproverAlternate
+                      }
                     />
                   ) : (
                     <Grid2 container spacing={2} sx={{ mt: 0.5 }}>
@@ -502,6 +522,14 @@ export default function PageModel(props) {
                             label={props.item.models[value]}
                             refreshData={refreshData}
                             setRefreshData={setRefreshData}
+                            requestsApproverManager={
+                              props.configData["requests"]
+                                .requestsApproverManager
+                            }
+                            stockApproverManager={
+                              props.configData["stock"]
+                                .stockEntriesApproverManager
+                            }
                             page={props.item.page}
                             tabIndex={
                               props.item.page === "customers" &&
@@ -512,7 +540,7 @@ export default function PageModel(props) {
                                 ? index + 1
                                 : index
                             }
-                            mainColor={props.configCustomization?.mainColor}
+                            mainColor={props.configCustomization.mainColor}
                           />
                         </Grid2>
                       ))}

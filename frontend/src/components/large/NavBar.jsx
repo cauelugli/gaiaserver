@@ -53,6 +53,20 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
   };
 
   React.useEffect(() => {
+    const handleNewNotificationToList = (notificationData) => {
+      // doesn't apply to 'self' emitter user
+      if (notificationData && user._id !== notificationData.sourceId) {
+        fetchData();
+      }
+    };
+
+    const handleNewNotificationToIndividual = (notificationData) => {
+      // doesn't apply to 'self' emitter user
+      if (notificationData && user._id === notificationData.receiver) {
+        fetchData();
+      }
+    };
+
     const handleNewNotificationToAdmin = (notificationData) => {
       // only to admin user
       if (notificationData && user.username === "admin") {
@@ -60,9 +74,16 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
       }
     };
 
+    socket.on("newNotificationToList", handleNewNotificationToList);
+    socket.on("newNotificationToIndividual", handleNewNotificationToIndividual);
     socket.on("newNotificationToAdmin", handleNewNotificationToAdmin);
 
     return () => {
+      socket.off("newNotificationToList", handleNewNotificationToList);
+      socket.off(
+        "newNotificationToIndividual",
+        handleNewNotificationToIndividual
+      );
       socket.on("newNotificationToAdmin", handleNewNotificationToAdmin);
     };
   });
@@ -91,7 +112,7 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
           >
             <Link to={"/"}>
               <img
-                src={`http://localhost:8080/static/${
+                src={`http://localhost:3000/static/${
                   configData && configData.customization
                     ? configData.customization.logo
                     : ""
@@ -109,10 +130,7 @@ export default function NavBar({ user, api, socket, configData, barPosition }) {
                 title={
                   <React.Fragment>
                     {missingCoreData.map((item, index) => (
-                      <Typography
-                        key={index}
-                        sx={{ fontSize: 15, m: 1, color: "white" }}
-                      >
+                      <Typography key={index} sx={{ fontSize: 15, m: 1 }}>
                         Não há nenhum {item}
                       </Typography>
                     ))}

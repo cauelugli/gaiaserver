@@ -43,12 +43,37 @@ function StandardTable(props) {
                   item={row[column.id]}
                   idIndexList={props.idIndexList}
                   column={column}
+                  isRequestsApproverManager={
+                    row._id === props.requestsApproverManager
+                  }
+                  isStockApproverManager={
+                    row._id === props.stockApproverManager
+                  }
+                  isRequestsApproverAlternate={
+                    row._id === props.requestsApproverAlternate
+                  }
+                  isStockApproverAlternate={
+                    row._id === props.stockApproverAlternate
+                  }
                 />
               </TableCell>
             ))}
             <TableCell align="right">
               <RowButton
+                //passing specific config to rowButton
+                canBeDeleted={appData?.configData[props.page]?.canBeDeleted}
+                //
                 userId={props.userId}
+                isRequestsApproverManager={
+                  row._id === props.requestsApproverManager
+                }
+                isStockApproverManager={row._id === props.stockApproverManager}
+                userIsRequestsApproverManager={
+                  props.userId === props.requestsApproverManager
+                }
+                userIsStockApproverManager={
+                  props.userId === props.stockApproverManager
+                }
                 mainColor={props.mainColor}
                 item={row}
                 page={props.page}
