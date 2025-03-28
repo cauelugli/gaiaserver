@@ -2,19 +2,21 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Divider, Grid2, List, ListItemButton, Typography } from "@mui/material";
+import {
+  Grid2,
+  List,
+  ListItemButton,
+  Typography,
+} from "@mui/material";
 
 import { icons } from "../../icons";
 
 const options = [
   { label: "Clientes", icon: <icons.WorkIcon />, link: "/customers" },
   { label: "Solicitações", icon: <icons.GradingIcon />, link: "/requests" },
-  { label: "Colaboradores", icon: <icons.GroupIcon />, link: "/users" },
-  { label: "Departamentos", icon: <icons.LanIcon />, link: "/departments" },
   { label: "Serviços", icon: <icons.BuildIcon />, link: "/services" },
   { label: "Produtos", icon: <icons.SellIcon />, link: "/products" },
   { label: "Estoque", icon: <icons.WarehouseIcon />, link: "/stock" },
-  { label: "Chat", icon: <icons.ChatIcon />, link: "/", disabled: true },
   { label: "Financeiro", icon: <icons.AttachMoneyIcon />, link: "/finance" },
   { label: "Relatórios", icon: <icons.AssessmentIcon />, link: "/reports" },
   {
@@ -23,17 +25,11 @@ const options = [
     link: "/help",
     disabled: true,
   },
-  {
-    label: "Acessos",
-    icon: <icons.AdminPanelSettingsIcon />,
-    link: "/security",
-  },
-
   { label: "Arquivos", icon: <icons.InsertDriveFileIcon />, link: "/files" },
   { label: "Configurações", icon: <icons.SettingsIcon />, link: "/config" },
 ];
 
-const SideBar = ({ configData, user }) => {
+const SideBar = ({ configData }) => {
   const [hoveredIndex, setHoveredIndex] = React.useState(null);
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
@@ -42,27 +38,6 @@ const SideBar = ({ configData, user }) => {
   const handleMouseLeave = () => {
     setHoveredIndex(null);
   };
-
-  function hasPermission(user, configData, routePath) {
-    if (user.username === "admin") return true;
-    if (!configData.permissions) return false;
-
-    const route = routePath.slice(1);
-    if (route === "" || route === "help" || route === "account") {
-      return true;
-    }
-
-    if (!route) {
-      return false;
-    }
-
-    const allowedRoles = configData.permissions[route];
-    return allowedRoles && allowedRoles.some((id) => id === user.role);
-  }
-
-  const filteredOptions = options.filter((option) =>
-    hasPermission(user, configData, option.link)
-  );
 
   return (
     <Grid2 sx={{ height: "98%" }}>
@@ -99,7 +74,7 @@ const SideBar = ({ configData, user }) => {
             />
           </ListItemButton>
         </Link>
-        {filteredOptions.map((option, index) => (
+        {options.map((option, index) => (
           <Link
             key={index}
             onClick={() => setHoveredIndex(index)}
@@ -182,17 +157,6 @@ const SideBar = ({ configData, user }) => {
                 }}
               />
             </ListItemButton>
-            {option.label === "Ajuda" && user.username === "admin" && (
-              <Divider
-                sx={{
-                  my: 0.75,
-                  backgroundColor:
-                    configData && configData.customization
-                      ? configData.customization.mainColor
-                      : "white",
-                }}
-              />
-            )}
           </Link>
         ))}
       </List>

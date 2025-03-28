@@ -9,7 +9,7 @@ const fetchStatuses = () => {
     try {
       const response = await fetch("http://localhost:3000/api/config");
       const data = await response.json();
-      const configData = data[0].requests;
+      const configData = data.requests;
       const sortedStatuses = configData.requestStatuses.sort((a, b) =>
         a.localeCompare(b)
       );
@@ -39,16 +39,12 @@ const rowButtonOptions = (props) => [
           modal: "Customer",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Customer",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Customer",
+          icon: <icons.DeleteIcon />,
+        },
         {
           label: "Novo",
           icon: <icons.AddIcon />,
@@ -82,16 +78,12 @@ const rowButtonOptions = (props) => [
           modal: "Client",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Client",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Client",
+          icon: <icons.DeleteIcon />,
+        },
         {
           label: "Novo",
           icon: <icons.AddIcon />,
@@ -115,122 +107,10 @@ const rowButtonOptions = (props) => [
     },
   },
   {
-    page: "users",
-    models: ["User", "User"],
-    menus: {
-      0: [
-        {
-          label: "Editar",
-          action: "edit",
-          modal: "User",
-          icon: <icons.ModeEditIcon />,
-        },
-        {
-          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
-          action: "archive",
-          modal: "User",
-          icon: <icons.ArchiveIcon />,
-        },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "User",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
-        {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "User",
-              targetModel: "Department",
-              targetLabel: "Departamento",
-              icon: <icons.LanIcon />,
-            },
-            {
-              modal: "small",
-              sourceModel: "User",
-              targetModel: "Position",
-              targetLabel: "Cargo",
-              icon: <icons.AssignmentIndIcon />,
-            },
-          ],
-        },
-      ],
-      1: [
-        {
-          label: "Editar",
-          action: "edit",
-          modal: "User",
-          icon: <icons.ModeEditIcon />,
-        },
-        {
-          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
-          action: "archive",
-          modal: "User",
-          icon: <icons.ArchiveIcon />,
-        },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "User",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
-        {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "User",
-              targetModel: "Department",
-              targetLabel: "Departamento",
-              icon: <icons.LanIcon />,
-            },
-            {
-              modal: "small",
-              sourceModel: "User",
-              targetModel: "Position",
-              targetLabel: "Cargo",
-              icon: <icons.AssignmentIndIcon />,
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
     page: "requests",
     models: ["Job", "Sale"],
     menus: {
       0: [
-        {
-          label: "Solicitar Aprovação",
-          action: "requestApproval",
-          modal: "Job",
-          icon: <icons.FactCheckIcon />,
-        },
-        ...(props.userIsRequestsApproverManager
-          ? [
-              {
-                label: "Aprovar Solicitação",
-                action: "approveRequest",
-                modal: "Job",
-                icon: <icons.SpellcheckIcon />,
-              },
-            ]
-          : []),
         {
           label: "Resolver",
           action: "resolve",
@@ -249,16 +129,12 @@ const rowButtonOptions = (props) => [
           modal: "Job",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Job",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Job",
+          icon: <icons.DeleteIcon />,
+        },
         ...(props.item.status !== "Resolvido"
           ? [
               {
@@ -282,22 +158,6 @@ const rowButtonOptions = (props) => [
       ],
       1: [
         {
-          label: "Solicitar Aprovação",
-          action: "requestApproval",
-          modal: "Sale",
-          icon: <icons.FactCheckIcon />,
-        },
-        ...(props.userIsRequestsApproverManager
-          ? [
-              {
-                label: "Aprovar Solicitação",
-                action: "approveRequest",
-                modal: "Sale",
-                icon: <icons.SpellcheckIcon />,
-              },
-            ]
-          : []),
-        {
           label: "Resolver",
           action: "resolve",
           modal: "Sale",
@@ -315,16 +175,12 @@ const rowButtonOptions = (props) => [
           modal: "Sale",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Sale",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Sale",
+          icon: <icons.DeleteIcon />,
+        },
         ...(props.item.status !== "Resolvido"
           ? [
               {
@@ -354,22 +210,6 @@ const rowButtonOptions = (props) => [
     menus: {
       0: [
         {
-          label: "Solicitar Aprovação",
-          action: "requestApproval",
-          modal: "StockEntry",
-          icon: <icons.FactCheckIcon />,
-        },
-        ...(props.userIsStockApproverManager
-          ? [
-              {
-                label: "Aprovar Solicitação",
-                action: "approveRequest",
-                modal: "StockEntry",
-                icon: <icons.SpellcheckIcon />,
-              },
-            ]
-          : []),
-        {
           label: "Editar",
           action: "edit",
           modal: "StockEntry",
@@ -387,16 +227,12 @@ const rowButtonOptions = (props) => [
           modal: "StockEntry",
           icon: <icons.CheckIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "StockEntry",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "StockEntry",
+          icon: <icons.DeleteIcon />,
+        },
         ...(props.item.status !== "Resolvido"
           ? [
               {
@@ -421,163 +257,6 @@ const rowButtonOptions = (props) => [
     },
   },
   {
-    page: "departments",
-    models: ["Department", "Group"],
-    menus: {
-      0: [
-        {
-          label: "Editar",
-          action: "edit",
-          modal: "Department",
-          icon: <icons.ModeEditIcon />,
-        },
-        {
-          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
-          action: "archive",
-          modal: "Department",
-          icon: <icons.ArchiveIcon />,
-        },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Department",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
-        {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "Department",
-              targetModel: "User",
-              targetLabel: "Membros",
-              targetFlag: "members",
-              icon: <icons.GroupIcon />,
-            },
-            {
-              modal: "small",
-              sourceModel: "Department",
-              targetModel: "User",
-              targetLabel: "Gerência",
-              targetFlag: "manager",
-              icon: <icons.Person4Icon />,
-            },
-          ],
-        },
-      ],
-      1: [
-        {
-          label: "Editar",
-          action: "edit",
-          modal: "Group",
-          icon: <icons.ModeEditIcon />,
-        },
-        {
-          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
-          action: "archive",
-          modal: "Group",
-          icon: <icons.ArchiveIcon />,
-        },
-        {
-          label: "Deletar",
-          action: "delete",
-          modal: "Group",
-          icon: <icons.DeleteIcon />,
-        },
-        {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "Department",
-              targetModel: "User",
-              targetLabel: "Membros",
-              targetFlag: "members",
-              icon: <icons.GroupIcon />,
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    page: "security",
-    models: ["Operator", "Position", "Role"],
-    menus: {
-      0: [
-        {
-          label: "Editar",
-          action: "edit",
-          modal: "Operator",
-          icon: <icons.ModeEditIcon />,
-        },
-        // it doesn't make sense archiving Operator 'model'
-        {
-          label: "Remover",
-          action: "delete",
-          modal: "Operator",
-          icon: <icons.DeleteIcon />,
-        },
-      ],
-      1: [
-        {
-          label: "Editar",
-          action: "edit",
-          modal: "Position",
-          icon: <icons.ModeEditIcon />,
-        },
-        {
-          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
-          action: "archive",
-          modal: "Position",
-          icon: <icons.ArchiveIcon />,
-        },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Position",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
-      ],
-      2: [
-        {
-          label: "Editar",
-          action: "edit",
-          modal: "Role",
-          icon: <icons.ModeEditIcon />,
-        },
-        {
-          label: props.item.status === "Arquivado" ? "Desarquivar" : "Arquivar",
-          action: "archive",
-          modal: "Role",
-          icon: <icons.ArchiveIcon />,
-        },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Role",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
-      ],
-    },
-  },
-  {
     page: "services",
     models: ["Service", "ServicePlan"],
     menus: {
@@ -594,29 +273,11 @@ const rowButtonOptions = (props) => [
           modal: "Service",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Service",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
         {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "Service",
-              targetModel: "Department",
-              targetLabel: "Departamento",
-              icon: <icons.LanIcon />,
-            },
-          ],
+          label: "Deletar",
+          action: "delete",
+          modal: "Service",
+          icon: <icons.DeleteIcon />,
         },
       ],
       1: [
@@ -632,29 +293,11 @@ const rowButtonOptions = (props) => [
           modal: "ServicePlan",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "ServicePlan",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
         {
-          label: "Alterar",
-          icon: <icons.SettingsIcon />,
-          action: "dynamicChange",
-          submenu: [
-            {
-              modal: "small",
-              sourceModel: "ServicePlan",
-              targetModel: "Department",
-              targetLabel: "Departamento",
-              icon: <icons.LanIcon />,
-            },
-          ],
+          label: "Deletar",
+          action: "delete",
+          modal: "ServicePlan",
+          icon: <icons.DeleteIcon />,
         },
       ],
     },
@@ -721,7 +364,6 @@ const rowButtonOptions = (props) => [
       ],
     },
   },
-
   {
     page: "products",
     models: ["Product"],
@@ -739,16 +381,12 @@ const rowButtonOptions = (props) => [
           modal: "Product",
           icon: <icons.ArchiveIcon />,
         },
-        ...(props.canBeDeleted === true
-          ? [
-              {
-                label: "Deletar",
-                action: "delete",
-                modal: "Product",
-                icon: <icons.DeleteIcon />,
-              },
-            ]
-          : []),
+        {
+          label: "Deletar",
+          action: "delete",
+          modal: "Product",
+          icon: <icons.DeleteIcon />,
+        },
       ],
     },
   },

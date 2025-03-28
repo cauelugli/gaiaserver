@@ -2,7 +2,6 @@
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { Avatar, Button, Grid2, Typography, InputLabel } from "@mui/material";
-import dayjs from "dayjs";
 
 const ChartItemDetail = ({
   selectedItem,
@@ -70,7 +69,7 @@ const ChartItemDetail = ({
               </Typography>
               <Grid2 container direction="row">
                 <Avatar
-                  src={`http://localhost:3000/static/${
+                  src={`http://localhost:8080/static/${
                     idIndexList.find(
                       (customer) => customer.id === selectedItem.customer
                     )?.image || ""
@@ -83,59 +82,6 @@ const ChartItemDetail = ({
                 )?.name || ""}
               </InputLabel>
             </Grid2>
-          )}
-
-          <Grid2 item>
-            <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
-              Criado por
-            </Typography>
-            <Grid2 container direction="row">
-              <Avatar
-                src={`http://localhost:3000/static/${
-                  idIndexList.find(
-                    (customer) => customer.id === selectedItem.createdBy
-                  )?.image || ""
-                }`}
-              />
-              <Typography sx={{ my: "auto" }}>
-                {idIndexList.find(
-                  (createdBy) => createdBy.id === selectedItem.createdBy
-                )?.name || ""}
-              </Typography>
-            </Grid2>
-            <InputLabel variant="standard" sx={{ mt: 1 }}>
-              {dayjs(selectedItem.createdAt).format("DD/MM/YY HH:MM")}
-            </InputLabel>
-          </Grid2>
-
-          {selectedItem.resolvedBy ? (
-            <Grid2 item>
-              <Typography variant="body1" sx={{ mb: 1, fontWeight: "bold" }}>
-                Resolvido por
-              </Typography>
-              <Grid2 container direction="row">
-                <Avatar
-                  src={`http://localhost:3000/static/${
-                    idIndexList.find(
-                      (resolver) => resolver.id === selectedItem.resolvedBy
-                    )?.image || ""
-                  }`}
-                />
-                <Typography sx={{ my: "auto" }}>
-                  {idIndexList.find(
-                    (resolver) => resolver.id === selectedItem.resolvedBy
-                  )?.name || ""}
-                </Typography>
-              </Grid2>
-              <InputLabel variant="standard" sx={{ mt: 1 }}>
-                {dayjs(selectedItem.resolvedAt).format("DD/MM/YY HH:MM")}{" "}
-              </InputLabel>
-            </Grid2>
-          ) : (
-            <>
-              <Grid2 id="ghost"></Grid2>
-              <Grid2 id="ghost"></Grid2>
-            </>
           )}
         </Grid2>
 
@@ -175,7 +121,7 @@ const ChartItemDetail = ({
                       >
                         <Avatar
                           alt={product.name || "Product Image"}
-                          src={`http://localhost:3000/static/${
+                          src={`http://localhost:8080/static/${
                             product.images?.[0] || product.image?.[0] || ""
                           }`}
                           sx={{ width: 32, height: 32, mr: 1 }}
@@ -238,7 +184,7 @@ const ChartItemDetail = ({
                       >
                         <Avatar
                           alt={item.name || "Product Image"}
-                          src={`http://localhost:3000/static/${
+                          src={`http://localhost:8080/static/${
                             item.images?.[0] || item.image?.[0] || ""
                           }`}
                           sx={{ width: 32, height: 32, mr: 1 }}

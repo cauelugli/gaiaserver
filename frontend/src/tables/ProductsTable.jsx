@@ -19,7 +19,7 @@ function ProductsTable(props) {
               <TableCell align="left">
                 <Avatar
                   alt="Imagem do Produto"
-                  src={`http://localhost:3000/static${
+                  src={`http://localhost:8080/static${
                     row.images ? row.images[0] : undefined
                   }`}
                   sx={{ width: 30, height: 30 }}
@@ -43,7 +43,6 @@ function ProductsTable(props) {
                   setRefreshData={props.setRefreshData}
                   configCustomization={props.configCustomization}
                   multiple={props.multiple}
-                  canBeDeleted={appData?.configData[props.page]?.canBeDeleted}
                 />
               </TableCell>
               {props.multiple && (

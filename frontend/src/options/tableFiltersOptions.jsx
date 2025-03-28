@@ -9,31 +9,15 @@ const tableFiltersOptions = {
   ],
   requests: [
     {
-      job: ["customer", "worker", "status"],
+      job: ["customer", "status"],
     },
     {
-      sale: ["customer", "seller", "status"],
-    },
-  ],
-  users: [
-    {
-      users: ["name", "department", "position"],
-    },
-    {
-      managers: ["name", "department", "position"],
-    },
-  ],
-  departments: [
-    {
-      departments: ["name", "type", "members"],
-    },
-    {
-      groups: ["name", "members"],
+      sale: ["customer", "status"],
     },
   ],
   services: [
     {
-      services: ["name", "type", "department", "products", "price"],
+      services: ["name", "type", "products", "price"],
     },
     {
       servicePlan: ["name", "period", "services", "price"],
@@ -41,7 +25,7 @@ const tableFiltersOptions = {
   ],
   stock: [
     {
-      stockEntries: ["name", "products", "createdBy", "status", "price"],
+      stockEntries: ["name", "products", "status", "price"],
     },
   ],
   finance: [
@@ -50,7 +34,6 @@ const tableFiltersOptions = {
         "number",
         "type",
         "customer",
-        "user",
         "items",
         "price",
         "status",

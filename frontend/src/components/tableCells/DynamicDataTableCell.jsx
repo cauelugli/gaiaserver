@@ -16,10 +16,7 @@ import {
   InputLabel,
 } from "@mui/material";
 
-import {
-  checkAvailability,
-  createScheduleSlots,
-} from "../../../../controllers/functions/overallFunctions";
+import { createScheduleSlots } from "../../../../controllers/functions/overallFunctions";
 
 const DynamicDataTableCell = (props) => {
   const [options, setOptions] = React.useState([]);
@@ -30,25 +27,7 @@ const DynamicDataTableCell = (props) => {
       // update: really...
       try {
         let data = [];
-        if (
-          props.field.dynamicData === "workers" ||
-          props.fields.data === "worker"
-        ) {
-          const resWorkers = await api.get("/get", {
-            params: { model: "User" },
-          });
-          data = resWorkers.data.filter((user) => !user.isManager);
-        } else if (props.field.dynamicData === "positions") {
-          const resPositions = await api.get("/get", {
-            params: { model: "Position" },
-          });
-          data = resPositions.data;
-        } else if (props.field.dynamicData === "username") {
-          const resPositions = await api.get("/get", {
-            params: { model: "User" },
-          });
-          data = resPositions.data.filter((user) => !user.username);
-        } else if (props.field.dynamicData === "scheduleTime") {
+        if (props.field.dynamicData === "scheduleTime") {
           const configAgenda = await api.get("/config/specific", {
             params: { key: "agenda", items: ["minTime", "maxTime"] },
           });
@@ -63,21 +42,11 @@ const DynamicDataTableCell = (props) => {
             params: { item: "services", parameter: "serviceTypes" },
           });
           data = resServiceTypes.data;
-        } else if (props.field.dynamicData === "departments") {
-          const resDepartments = await api.get("/get", {
-            params: { model: "Department" },
-          });
-          data = resDepartments.data;
         } else if (props.field.dynamicData === "services") {
           const resServices = await api.get("/get", {
             params: { model: "Service" },
           });
           data = resServices.data;
-        } else if (props.field.dynamicData === "roles") {
-          const resRoles = await api.get("/get", {
-            params: { model: "Role" },
-          });
-          data = resRoles.data;
         } else {
           const response = await api.get(`/${props.field.dynamicData}`);
           data = response.data;
@@ -125,7 +94,7 @@ const DynamicDataTableCell = (props) => {
               <Grid2 container direction="row" alignItems="center">
                 <Avatar
                   alt="Imagem"
-                  src={`http://localhost:3000/static/${selected.image}`}
+                  src={`http://localhost:8080/static/${selected.image}`}
                   sx={{ width: 24, height: 24, marginRight: 2 }}
                 />
                 <Typography sx={{ fontSize: 13 }}>{selected.name}</Typography>
@@ -172,29 +141,11 @@ const DynamicDataTableCell = (props) => {
         multiple={props.multiple}
         renderValue={renderValue}
       >
-        {props.field.dynamicData === "managers" ||
-        props.field.dynamicData === "workers"
-          ? options.map((option, index) => (
-              <MenuItem
-                value={option}
-                key={index}
-                disabled={checkAvailability(props.field.dynamicData, option)}
-              >
-                <Grid2 container direction="row" alignItems="center">
-                  <Avatar
-                    alt="Imagem"
-                    src={`http://localhost:3000/static/${option.image}`}
-                    sx={{ width: 24, height: 24, marginRight: 2 }}
-                  />
-                  <Typography>{option.name}</Typography>
-                </Grid2>
-              </MenuItem>
-            ))
-          : options.map((option, index) => (
-              <MenuItem value={option} key={index}>
-                {option.name || option}
-              </MenuItem>
-            ))}
+        {options.map((option, index) => (
+          <MenuItem value={option} key={index}>
+            {option.name || option}
+          </MenuItem>
+        ))}
       </Select>
     </>
   );

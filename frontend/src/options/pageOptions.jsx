@@ -77,10 +77,6 @@ const pageOptions = [
           label: "Cliente",
         },
         {
-          id: "worker",
-          label: "Designado",
-        },
-        {
           id: "scheduledTo",
           label: "Agendado para",
         },
@@ -108,10 +104,6 @@ const pageOptions = [
           label: "Cliente",
         },
         {
-          id: "seller",
-          label: "Vendedor",
-        },
-        {
           id: "products",
           label: "Itens",
         },
@@ -131,118 +123,6 @@ const pageOptions = [
     ],
   },
   {
-    page: "users",
-    models: ["User", "User"],
-    label: "Colaboradores",
-    tabs: ["Funcionários", "Gerentes"],
-    tableColumns: [
-      // USER TABLE
-      [
-        {
-          id: "image",
-          label: "📷",
-        },
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "email",
-          label: "E-mail",
-        },
-        {
-          id: "cellphone",
-          label: "Telefone",
-        },
-        {
-          id: "position",
-          label: "Cargo",
-        },
-        {
-          id: "department",
-          label: "Departamento",
-        },
-      ],
-      // MANAGER TABLE
-      [
-        {
-          id: "image",
-          label: "📷",
-        },
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "email",
-          label: "E-mail",
-        },
-        {
-          id: "cellphone",
-          label: "Telefone",
-        },
-        {
-          id: "position",
-          label: "Cargo",
-        },
-        {
-          id: "department",
-          label: "Departamento",
-        },
-      ],
-    ],
-  },
-  {
-    page: "departments",
-    models: ["Department", "Group"],
-    label: "Departamentos",
-    tabs: ["Departamentos", "Grupos"],
-    tableColumns: [
-      // SERVICE SALES AND INTERNAL DEPARTMENTS TABLE
-      [
-        {
-          id: "color",
-          label: "🎨",
-        },
-        {
-          id: "type",
-          label: "Tipo",
-        },
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "members",
-          label: "Colaboradores",
-        },
-        {
-          id: "manager",
-          label: "Gerente",
-        },
-        {
-          id: "email",
-          label: "E-mail",
-        },
-        {
-          id: "phone",
-          label: "Telefone",
-        },
-      ],
-      // GROUPS TABLE
-      [
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "members",
-          label: "Colaboradores",
-        },
-      ],
-    ],
-  },
-  {
     page: "services",
     models: ["Service", "ServicePlan"],
     label: "Serviços",
@@ -257,10 +137,6 @@ const pageOptions = [
         {
           id: "type",
           label: "Tipo",
-        },
-        {
-          id: "department",
-          label: "Departamento",
         },
         {
           id: "products",
@@ -317,10 +193,6 @@ const pageOptions = [
           label: "Valor Total",
         },
         {
-          id: "createdBy",
-          label: "Criado por",
-        },
-        {
           id: "status",
           label: "Status",
         },
@@ -336,13 +208,6 @@ const pageOptions = [
     label: "Produtos",
     models: ["Product"],
     tabs: [],
-  },
-  {
-    page: "chat",
-    label: "Chat",
-    tabs: ["Chats"],
-    models: ["Chat"],
-    tableColumns: [[""], [""]],
   },
   {
     page: "finance",
@@ -362,10 +227,6 @@ const pageOptions = [
         {
           id: "customer",
           label: "Cliente",
-        },
-        {
-          id: "user",
-          label: "Colaborador",
         },
         {
           id: "items",
@@ -417,56 +278,6 @@ const pageOptions = [
     label: "Relatórios",
     tabs: [],
     tableColumns: [],
-  },
-  {
-    page: "security",
-    label: "Segurança de Acessos",
-    tabs: ["Operadores", "Cargos", "Perfil de Acesso"],
-    models: ["Operator", "Position", "Role"],
-    tableColumns: [
-      [
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "username",
-          label: "Nome de Operador",
-        },
-        {
-          id: "role",
-          label: "Perfil de Acesso",
-        },
-        {
-          id: "alreadyLogin",
-          label: "Login Realizado",
-        },
-      ],
-      [
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "department",
-          label: "Departamento",
-        },
-        {
-          id: "members",
-          label: "Colaboradores",
-        },
-      ],
-      [
-        {
-          id: "name",
-          label: "Nome",
-        },
-        {
-          id: "members",
-          label: "Colaboradores",
-        },
-      ],
-    ],
   },
 ];
 

@@ -11,15 +11,7 @@ import {
 } from "../../../../controllers/functions/overallFunctions";
 import dayjs from "dayjs";
 
-const DataTableCell = ({
-  item,
-  isRequestsApproverManager,
-  isStockApproverManager,
-  isRequestsApproverAlternate,
-  isStockApproverAlternate,
-  idIndexList,
-  column,
-}) => {
+const DataTableCell = ({ item, idIndexList, column }) => {
   const getNameById = (id) => {
     const found = idIndexList.find((obj) => obj.id === id);
     if (found && found.image) {
@@ -33,7 +25,7 @@ const DataTableCell = ({
           <Tooltip title={found.name}>
             <Avatar
               alt={found.name}
-              src={`http://localhost:3000/static${found.image}`}
+              src={`http://localhost:8080/static${found.image}`}
               sx={{
                 width: 30,
                 height: 30,
@@ -49,12 +41,6 @@ const DataTableCell = ({
     } else if (found) {
       return found.name || found;
     }
-  };
-
-  const departmentTypes = {
-    Vendas: <icons.SellIcon />,
-    Serviços: <icons.BuildIcon />,
-    Interno: <icons.LanIcon />,
   };
 
   return (
@@ -75,52 +61,12 @@ const DataTableCell = ({
           >
             <Avatar
               alt="Imagem"
-              src={`http://localhost:3000/static${item}`}
+              src={`http://localhost:8080/static${item}`}
               sx={{
                 width: 30,
                 height: 30,
               }}
             />
-            {isRequestsApproverManager && (
-              <Tooltip title="Gerente Aprovador de Solicitações">
-                <icons.StarIcon
-                  sx={{
-                    width: 14,
-                    height: 14,
-                  }}
-                />
-              </Tooltip>
-            )}
-            {isStockApproverManager && (
-              <Tooltip title="Gerente Aprovador de Estoque">
-                <icons.StarIcon
-                  sx={{
-                    width: 14,
-                    height: 14,
-                  }}
-                />
-              </Tooltip>
-            )}
-            {isRequestsApproverAlternate && (
-              <Tooltip title="Suplente Aprovador de Solicitações">
-                <icons.StarIcon
-                  sx={{
-                    width: 14,
-                    height: 14,
-                  }}
-                />
-              </Tooltip>
-            )}
-            {isStockApproverAlternate && (
-              <Tooltip title="Suplente Aprovador de Estoque">
-                <icons.StarIcon
-                  sx={{
-                    width: 14,
-                    height: 14,
-                  }}
-                />
-              </Tooltip>
-            )}
           </Grid2>
         </Grid2>
       ) : Array.isArray(item) ? (
@@ -162,8 +108,8 @@ const DataTableCell = ({
                         alt={idIndexList.find((user) => user.id === obj)?.name}
                         src={
                           obj.images
-                            ? `http://localhost:3000/static${obj.images[0]}`
-                            : `http://localhost:3000/static${
+                            ? `http://localhost:8080/static${obj.images[0]}`
+                            : `http://localhost:8080/static${
                                 idIndexList.find((user) => user.id === obj)
                                   ?.image
                               }`
@@ -211,8 +157,6 @@ const DataTableCell = ({
         <>{getNameById(item)}</>
       ) : isDate(item) ? (
         <>{dayjs(item).format("DD/MM/YY HH:MM")}</>
-      ) : column.id === "type" ? (
-        <Tooltip title={item}>{departmentTypes[item]}</Tooltip>
       ) : (
         <Grid2>{item}</Grid2>
       )}

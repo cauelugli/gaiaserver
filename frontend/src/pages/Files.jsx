@@ -5,7 +5,6 @@ import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Worker, Viewer } from "@react-pdf-viewer/core";
 
 const api = axios.create({
   baseURL: "http://localhost:3000/api",
@@ -33,7 +32,7 @@ function CustomTabPanel(props) {
   const { children, value, index } = props;
 
   return (
-    <div role="tabpanel" hidden={value !== index}>
+    <div hidden={value !== index}>
       {value === index && (
         <Box sx={{ p: 1 }}>
           <Typography>{children}</Typography>
@@ -159,12 +158,6 @@ export default function Files({ topBar }) {
   };
 
   const [viewDialogOpen, setViewDialogOpen] = React.useState(false);
-  const [pdfUrl, setPdfUrl] = React.useState("");
-
-  const openViewDialog = (file) => {
-    setPdfUrl(`http://localhost:3000/static/docs/${file.name}`);
-    setViewDialogOpen(true);
-  };
 
   const closeViewDialog = () => {
     setViewDialogOpen(false);
@@ -183,8 +176,6 @@ export default function Files({ topBar }) {
   const isImage = (filename) =>
     imageExtensions.some((extension) => filename.endsWith(extension));
 
-  const isPdf = (filename) => filename.endsWith(".pdf");
-
   return (
     <>
       <Box>
@@ -198,10 +189,6 @@ export default function Files({ topBar }) {
             TabIndicatorProps={{ style: { backgroundColor: "black" } }}
             sx={{ width: topBar ? "103%" : "102%" }}
           >
-            <Tab
-              label={<Typography sx={{ fontSize: 13 }}>Documentos</Typography>}
-              sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
-            />
             <Tab
               label={<Typography sx={{ fontSize: 13 }}>Imagens</Typography>}
               sx={{ color: "black", "&.Mui-selected": { color: "black" } }}
@@ -255,7 +242,7 @@ export default function Files({ topBar }) {
                       <Grid2 key={file._id} item xs={2}>
                         <img
                           alt="Imagem do Documento"
-                          src={`http://localhost:3000/static/pdf.png`}
+                          src={`http://localhost:8080/static/pdf.png`}
                           style={{
                             width: 100,
                             height: 100,
@@ -332,7 +319,7 @@ export default function Files({ topBar }) {
                     <Grid2 key={file._id} item xs={2}>
                       <img
                         alt="Imagem do Produto"
-                        src={`http://localhost:3000/static/images/${file.name}`}
+                        src={`http://localhost:8080/static/images/${file.name}`}
                         style={{
                           width: 100,
                           height: 100,
@@ -400,19 +387,9 @@ export default function Files({ topBar }) {
                 {attachments.map((file) => {
                   return (
                     <Grid2 key={file._id} item xs={2}>
-                      {isPdf(file.name) ? (
+                      {isImage(file.name) ? (
                         <img
-                          src={`http://localhost:3000/static/pdf.png`}
-                          alt="PDF"
-                          style={{
-                            width: "80px",
-                            height: "80px",
-                            marginBottom: "8px",
-                          }}
-                        />
-                      ) : isImage(file.name) ? (
-                        <img
-                          src={`http://localhost:3000/static/attachments/${file.name}`}
+                          src={`http://localhost:8080/static/attachments/${file.name}`}
                           alt="Pré-visualização"
                           style={{
                             width: "80px",
@@ -422,7 +399,7 @@ export default function Files({ topBar }) {
                         />
                       ) : (
                         <img
-                          src={`http://localhost:3000/static/doc.png`}
+                          src={`http://localhost:8080/static/doc.png`}
                           alt="Other"
                           style={{
                             width: "80px",
@@ -490,28 +467,6 @@ export default function Files({ topBar }) {
               color="secondary"
             >
               Confirmar
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Dialog
-          open={viewDialogOpen}
-          onClose={closeViewDialog}
-          fullWidth
-          maxWidth="md"
-        >
-          <DialogTitle>Visualização do Orçamento</DialogTitle>
-          <DialogContent>
-            <Box style={{ height: "600px" }}>
-              <Worker
-                workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
-              >
-                <Viewer fileUrl={pdfUrl} />
-              </Worker>
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={closeViewDialog} color="primary">
-              Fechar
             </Button>
           </DialogActions>
         </Dialog>

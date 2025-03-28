@@ -49,19 +49,7 @@ export function isButtonDisabled(
         return false;
       case "Cliente Pessoa Física":
         return false;
-      case "Operador":
-        return false;
-      case "Colaborador":
-        return false;
-      case "Gerente":
-        return false;
-      case "Cargo":
-        return false;
-      case "Departamento":
-        return false;
-      case "Grupo":
-        return false;
-      case "Perfil de Acesso":
+
         return false;
       case "Venda":
         return false;
@@ -71,63 +59,6 @@ export function isButtonDisabled(
         return true;
     }
   }
-}
-
-export function checkAvailability(item, option, targetId) {
-  switch (item) {
-    case "members":
-    case "managers":
-      if (option.department && typeof option.department === "string") {
-        return true;
-      }
-      break;
-
-    case "resolvableRequest":
-      if (
-        option === "Aberto" ||
-        option === "Aprovação Solicitada" ||
-        option === "Resolvido"
-      ) {
-        return true;
-      }
-      break;
-
-    case "approvableRequest":
-      if (
-        option === "Aprovado" ||
-        option === "Aprovação Solicitada" ||
-        option === "Resolvido"
-      ) {
-        return true;
-      }
-      break;
-
-    case "manager":
-      if (option.department && typeof option.department === "string") {
-        if (option.department === targetId) {
-          return false;
-        } else {
-          return true;
-        }
-      }
-      break;
-
-    case "creatableUsername":
-      if (option) {
-        return true;
-      }
-      break;
-
-    case "removableUsername":
-      if (!option) {
-        return true;
-      }
-      break;
-
-    default:
-      return false;
-  }
-  return false;
 }
 
 export function isArray(data) {
@@ -140,24 +71,6 @@ export function isId(str) {
 
 export function isDate(str) {
   return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(str);
-}
-
-export function getDataForPage(itemsResponse, page, model) {
-  const filters = {
-    products: (item) => item.name,
-    stock: (item) => (model === "Product" ? item.name : true),
-  };
-
-  const filterFunc = filters[page] || (() => true);
-
-  let filteredItems = isArray(itemsResponse.data).filter(filterFunc);
-  const baseItems = isArray(itemsResponse.data).filter((item) => !item.name);
-
-  if (model === "Operator") {
-    filteredItems = filteredItems.filter((user) => user.username);
-  }
-
-  return { filteredItems, baseItems };
 }
 
 export function createScheduleSlots(minTime, maxTime, serviceLengthLabel) {
