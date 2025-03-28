@@ -17,6 +17,18 @@ export const optionsMainblocks = [
     permissionLabel: "requests",
   },
   {
+    icon: <icons.GroupIcon sx={{ fontSize: 52 }} />,
+    text: "Colaboradores",
+    link: "/users",
+    permissionLabel: "users",
+  },
+  {
+    icon: <icons.LanIcon sx={{ fontSize: 52 }} />,
+    text: "Departamentos",
+    link: "/departments",
+    permissionLabel: "departments",
+  },
+  {
     icon: <icons.SellIcon sx={{ fontSize: 52 }} />,
     text: "Produtos",
     link: "/products",
@@ -45,6 +57,18 @@ export const optionsMainblocks = [
     text: "Relatórios",
     link: "/reports",
     permissionLabel: "reports",
+  },
+  {
+    icon: <icons.AdminPanelSettingsIcon sx={{ fontSize: 52 }} />,
+    text: "Acessos",
+    link: "/security",
+    permissionLabel: "security",
+  },
+  {
+    icon: <icons.ChatIcon sx={{ fontSize: 52 }} />,
+    text: "Chat",
+    link: "/chat",
+    permissionLabel: "chat",
   },
   {
     icon: <icons.SettingsIcon sx={{ fontSize: 52 }} />,

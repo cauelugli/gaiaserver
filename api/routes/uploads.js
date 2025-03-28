@@ -4,6 +4,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const Product = require("../../models/models/Product");
+const User = require("../../models/models/User");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -94,6 +95,9 @@ router.get("/listFiles", async (req, res) => {
     try {
       const products = await Product.find();
       inUse.push(...products.map((product) => product.image));
+
+      const users = await User.find();
+      inUse.push(...users.map((user) => user.image));
 
       let totalSpace = 0;
 
@@ -218,7 +222,10 @@ router.get("/listAttachments", async (req, res) => {
 
 // DELETE SINGLE FILE
 router.delete("/deleteFile/:filename", (req, res) => {
-  const directory = path.join(__dirname, `../../uploads/images`);
+  const directory = path.join(
+    __dirname,
+    `../../uploads/${req.params.filename.endsWith(".pdf") ? "docs" : "images"}`
+  );
   const filePath = path.join(directory, req.params.filename);
 
   if (fs.existsSync(filePath)) {
@@ -255,7 +262,12 @@ router.delete("/deleteAttachment/:filename", (req, res) => {
 // DELETE MULTIPLE FILES
 router.post("/deleteMultipleFiles", (req, res) => {
   const { files } = req.body;
-  const directory = path.join(__dirname, `../../uploads/images`);
+  const directory = path.join(
+    __dirname,
+    `../../uploads/${
+      req.body.files[0].name.endsWith(".pdf") ? "docs" : "images"
+    }`
+  );
   try {
     files.forEach((file) => {
       const filePath = path.join(directory, file.name);

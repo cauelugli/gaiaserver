@@ -79,9 +79,17 @@ export default function Account({
     try {
       const uploadResponse = await api.post("/uploads/singleFile", formData);
       const imagePath = uploadResponse.data.imagePath;
-      const res = await api.put("/admin/changeProfilePicture", {
-        image: imagePath,
-      });
+      let res;
+      if (user.username === "admin") {
+        res = await api.put("/admin/changeProfilePicture", {
+          image: imagePath,
+        });
+      } else {
+        res = await api.put("/users/changeProfilePicture", {
+          userId: user._id,
+          image: imagePath,
+        });
+      }
 
       if (res.data) {
         toast.success("Imagem Alterada Adicionado!", {
@@ -275,7 +283,7 @@ export default function Account({
   };
 
   return (
-    <Grid2 sx={{ width: "175%" }}>
+    <Grid2 sx={{ width: "150%" }}>
       <Typography
         sx={{ fontSize: 25, ml: 2, mb: 2, fontWeight: "bold" }}
         id="title"
@@ -325,7 +333,7 @@ export default function Account({
             >
               <Avatar
                 alt="Imagem do Usuário"
-                src={`http://localhost:8080/static/${user.image}`}
+                src={`http://localhost:3000/static/${user.image}`}
                 sx={{
                   width: 230,
                   height: 230,
@@ -359,7 +367,7 @@ export default function Account({
                 component="span"
                 size="small"
                 startIcon={<icons.FileUploadIcon />}
-                sx={{ mt: 3, mb: 1 }}
+                sx={{ mt: 2 }}
               >
                 Nova Imagem
               </Button>
@@ -381,7 +389,6 @@ export default function Account({
                   Cancelar
                 </Button>
                 <Button
-                  sx={{ ml: 2 }}
                   variant="contained"
                   color="success"
                   size="small"
@@ -396,8 +403,47 @@ export default function Account({
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell align="center">
+                <TableCell>
                   <Typography sx={{ fontSize: "14px" }}>Nome</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px" }}>E-mail</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px" }}>Telefone</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px" }}>
+                    Departamento
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Typography>{user.name}</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>{user.email}</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>{user.phone}</Typography>
+                </TableCell>
+                <TableCell align="center">
+                  <Typography>
+                    {idIndexList.find((item) => item.id === user.department)
+                      ?.name || ""}
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+          <Table size="small" sx={{ mt: 4 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell align="center">
+                  <Typography sx={{ fontSize: "14px" }}>Cargo</Typography>
                 </TableCell>
                 <TableCell align="center">
                   <Typography sx={{ fontSize: "14px" }}>
@@ -405,20 +451,28 @@ export default function Account({
                   </Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography sx={{ fontSize: "14px" }}>E-mail</Typography>
+                  <Typography sx={{ fontSize: "14px" }}>
+                    Perfil de Acesso
+                  </Typography>
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               <TableRow>
                 <TableCell align="center">
-                  <Typography>{user.name}</Typography>
+                  <Typography>
+                    {idIndexList.find((item) => item.id === user.position)
+                      ?.name || "-"}
+                  </Typography>
                 </TableCell>
                 <TableCell align="center">
                   <Typography>{user.username ? user.username : ""}</Typography>
                 </TableCell>
                 <TableCell align="center">
-                  <Typography>{user.email}</Typography>
+                  <Typography>
+                    {idIndexList.find((item) => item.id === user.role)?.name ||
+                      ""}
+                  </Typography>
                 </TableCell>
               </TableRow>
             </TableBody>

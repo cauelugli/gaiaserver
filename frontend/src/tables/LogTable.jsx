@@ -24,8 +24,11 @@ function LogTable(props) {
     { key: "archive", value: "Arquivamento" },
     { key: "unarchive", value: "Desarquivamento" },
     { key: "interaction", value: "Interação" },
+    { key: "challengeRequest", value: "Contestação" },
     { key: "resolve", value: "Resolução" },
     { key: "requestBuy", value: "Resquisição de Compra" },
+    { key: "requestApproval", value: "Resquisição de Aprovação" },
+    { key: "approveRequest", value: "Aprovação de Requisição" },
   ];
 
   const typeColors = [
@@ -36,17 +39,24 @@ function LogTable(props) {
     { key: "Arquivamento", value: "#dbdbdb" }, // lightgrey
     { key: "Desarquivamento", value: "#bbffbb" }, // green
     { key: "Interação", value: "#ffffff" }, // white
+    { key: "Contestação", value: "#ffffff" }, // white
     { key: "Resolução", value: "#bbffbb" }, // green
     { key: "Resquisição de Compra", value: "#ffffff" }, // white
+    { key: "Resquisição de Aprovação", value: "#ffffff" }, // white
+    { key: "Aprovação de Requisição", value: "#bbffff" }, // blue
   ];
 
   const translatedKeys = [
     { key: "name", value: "Nome" },
     { key: "customer", value: "Cliente" },
+    { key: "worker", value: "Designado" },
     { key: "service", value: "Serviço" },
     { key: "scheduledTo", value: "Data Agendada" },
     { key: "description", value: "Descrição" },
+    { key: "createdBy", value: "Criado por" },
     { key: "title", value: "Título" },
+    { key: "position", value: "Cargo" },
+    { key: "department", value: "Departamento" },
     { key: "resolution", value: "Resolução" },
     { key: "products", value: "Produtos" },
     { key: "buyValue", value: "Valor de Compra" },
@@ -125,7 +135,7 @@ function LogTable(props) {
               <Grid2 item>
                 <Avatar
                   sx={{ width: 24, height: 24 }}
-                  src={`http://localhost:8080/static/${
+                  src={`http://localhost:3000/static/${
                     props.idIndexList.find((item) => item.id === row.source)
                       ?.image || ""
                   }`}
@@ -176,6 +186,7 @@ function LogTable(props) {
                                       if (
                                         ![
                                           "createdAt",
+                                          "createdBy",
                                           "__v",
                                           "_id",
                                           "count",
@@ -203,7 +214,7 @@ function LogTable(props) {
                                         filteredItem.images.length > 0 && (
                                           <Avatar
                                             sx={{ width: 24, height: 24 }}
-                                            src={`http://localhost:8080/static/${filteredItem.images[0]}`}
+                                            src={`http://localhost:3000/static/${filteredItem.images[0]}`}
                                           />
                                         )}
                                       {/* Exibe as demais informações */}
@@ -243,6 +254,7 @@ function LogTable(props) {
                                       if (
                                         ![
                                           "createdAt",
+                                          "createdBy",
                                           "__v",
                                           "_id",
                                           "count",
@@ -270,7 +282,7 @@ function LogTable(props) {
                                         filteredItem.images.length > 0 && (
                                           <Avatar
                                             sx={{ width: 24, height: 24 }}
-                                            src={`http://localhost:8080/static/${filteredItem.images[0]}`}
+                                            src={`http://localhost:3000/static/${filteredItem.images[0]}`}
                                           />
                                         )}
                                       {/* Exibe as demais informações */}

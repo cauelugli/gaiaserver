@@ -2,11 +2,14 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react/prop-types */
 import React, { useEffect } from "react";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
 import {
+  Box,
   Button,
   DialogActions,
   DialogContent,
@@ -21,6 +24,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 
 import { icons } from "../../icons";
 
@@ -49,6 +53,7 @@ const ViewDialog = ({
   search,
 }) => {
   let isImage;
+  let isPdf;
 
   const [filteredActivities, setFilteredActivities] = React.useState([]);
   const [searchValue, setSearchValue] = React.useState("");
@@ -59,6 +64,8 @@ const ViewDialog = ({
     isImage = imageExtensions.some((extension) =>
       selectedItem.endsWith(extension)
     );
+
+    isPdf = selectedItem.endsWith(".pdf");
   }
 
   useEffect(() => {
@@ -94,7 +101,9 @@ const ViewDialog = ({
             femaleGender={false}
           />
         ) : (
-          !isImage && (selectedItem.name || selectedItem.title)
+          !isImage &&
+          !isPdf &&
+          (selectedItem.name || selectedItem.title)
         )}
       </DialogTitle>
 
@@ -202,6 +211,7 @@ const ViewDialog = ({
               <TableRow>
                 <TableCell
                   sx={{
+                    
                     position: "sticky",
                     top: 0,
                     zIndex: 100,
@@ -212,6 +222,7 @@ const ViewDialog = ({
                 <TableCell
                   align="left"
                   sx={{
+                    
                     position: "sticky",
                     top: 0,
                     zIndex: 100,
@@ -222,6 +233,7 @@ const ViewDialog = ({
                 <TableCell
                   align="left"
                   sx={{
+                    
                     position: "sticky",
                     top: 0,
                     zIndex: 100,
@@ -234,6 +246,7 @@ const ViewDialog = ({
                 <TableCell
                   align="left"
                   sx={{
+                    
                     position: "sticky",
                     top: 0,
                     zIndex: 100,
@@ -244,6 +257,7 @@ const ViewDialog = ({
                 <TableCell
                   align="left"
                   sx={{
+                    
                     position: "sticky",
                     top: 0,
                     zIndex: 100,
@@ -302,7 +316,7 @@ const ViewDialog = ({
                 src={
                   createObjectURL
                     ? URL.createObjectURL(createObjectURLItem)
-                    : `http://localhost:8080/static/${selectedItem}`
+                    : `http://localhost:3000/static/${selectedItem}`
                 }
                 alt="Imagem"
                 style={{
@@ -311,6 +325,17 @@ const ViewDialog = ({
                   objectFit: "contain",
                 }}
               />
+            )}
+            {isPdf && (
+              <Box style={{ width: "100%", height: "100%" }}>
+                <Worker
+                  workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}
+                >
+                  <Viewer
+                    fileUrl={`http://localhost:3000/static/${selectedItem}`}
+                  />
+                </Worker>
+              </Box>
             )}
           </Grid2>
         )}

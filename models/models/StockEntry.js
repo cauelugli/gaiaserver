@@ -5,6 +5,9 @@ const stockEntrySchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  createdBy: {
+    type: String,
+  },
   items: {
     type: Array,
     required: true,

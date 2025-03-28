@@ -2,24 +2,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import {
-  Divider,
-  Grid2,
-  List,
-  ListItemButton,
-  Typography,
-} from "@mui/material";
+import { Divider, Grid2, List, ListItemButton, Typography } from "@mui/material";
 
 import { icons } from "../../icons";
 
 const options = [
   { label: "Clientes", icon: <icons.WorkIcon />, link: "/customers" },
   { label: "Solicitações", icon: <icons.GradingIcon />, link: "/requests" },
+  { label: "Colaboradores", icon: <icons.GroupIcon />, link: "/users" },
+  { label: "Departamentos", icon: <icons.LanIcon />, link: "/departments" },
   { label: "Serviços", icon: <icons.BuildIcon />, link: "/services" },
   { label: "Produtos", icon: <icons.SellIcon />, link: "/products" },
   { label: "Estoque", icon: <icons.WarehouseIcon />, link: "/stock" },
   { label: "Financeiro", icon: <icons.AttachMoneyIcon />, link: "/finance" },
+  { label: "Chat", icon: <icons.ChatIcon />, link: "/", disabled: true },
   { label: "Relatórios", icon: <icons.AssessmentIcon />, link: "/reports" },
+  {
+    label: "Acessos",
+    icon: <icons.AdminPanelSettingsIcon />,
+    link: "/security",
+  },
+
   { label: "Arquivos", icon: <icons.InsertDriveFileIcon />, link: "/files" },
   { label: "Configurações", icon: <icons.SettingsIcon />, link: "/config" },
   {
@@ -30,7 +33,7 @@ const options = [
   },
 ];
 
-const TopBar = ({ configData }) => {
+const TopBar = ({ configData, user }) => {
   const [hoveredIndex, setHoveredIndex] = React.useState(null);
   const handleMouseEnter = (index) => {
     setHoveredIndex(index);
@@ -39,6 +42,27 @@ const TopBar = ({ configData }) => {
   const handleMouseLeave = () => {
     setHoveredIndex(null);
   };
+
+  function hasPermission(user, configData, routePath) {
+    if (user.username === "admin") return true;
+    if (!configData.permissions) return false;
+
+    const route = routePath.slice(1);
+    if (route === "" || route === "help" || route === "account") {
+      return true;
+    }
+
+    if (!route) {
+      return false;
+    }
+
+    const allowedRoles = configData.permissions[route];
+    return allowedRoles && allowedRoles.some((id) => id === user.role);
+  }
+
+  const filteredOptions = options.filter((option) =>
+    hasPermission(user, configData, option.link)
+  );
 
   return (
     <>
@@ -77,7 +101,7 @@ const TopBar = ({ configData }) => {
             />
           </ListItemButton>
         </Link>
-        {options.map((option, index) => (
+        {filteredOptions.map((option, index) => (
           <Grid2 key={index}>
             {option.label === "Acessos" && (
               <Divider orientation="vertical" flexItem />

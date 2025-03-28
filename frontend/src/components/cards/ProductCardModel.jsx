@@ -61,7 +61,7 @@ export default function ProductCardModel({
             <Grid2 container direction="row" justifyContent="center">
               <Avatar
                 alt=""
-                src={`http://localhost:8080/static/${item?.images?.[0] || ""}`}
+                src={`http://localhost:3000/static/${item?.images?.[0] || ""}`}
                 sx={{
                   width: 40 + cardSize * 15,
                   height: 40 + cardSize * 15,
@@ -83,13 +83,16 @@ export default function ProductCardModel({
             </Typography>{" "}
             <RowButton
               userId={userId}
-              item={item}
+              // userIsRequestsApproverManager={userId === requestsApproverManager}
+              // userIsStockApproverManager={userId === stockApproverManager}
               // mainColor={mainColor}
+              item={item}
               // page={page}
               // tabIndex={tabIndex}
               refreshData={refreshData}
               setRefreshData={setRefreshData}
               fromCard={true}
+              canBeDeleted={appData?.configData["products"]?.canBeDeleted}
               // multiple={props.multiple} maybe 'multipleFromCard', cause styling will be different
             />
           </Grid2>

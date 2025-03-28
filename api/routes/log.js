@@ -36,12 +36,25 @@ const compareData = (prevData, targetData) => {
 const addMappingTable = {
   "Cliente Empresa": ["image", "name", "phone", "mainContactName"],
   "Cliente Pessoa Física": ["image", "name", "phone", "email"],
-  Job: ["number", "customer", "service", "scheduledTo"],
-  Venda: ["number", "customer", "products", "deliveryScheduledTo"],
-  "Entrada de Estoque": ["number", "items"],
-  Serviço: ["name", "type", "price"],
+  Job: ["number", "customer", "worker", "service", "scheduledTo", "createdBy"],
+  Venda: [
+    "number",
+    "customer",
+    "seller",
+    "products",
+    "deliveryScheduledTo",
+    "createdBy",
+  ],
+  "Entrada de Estoque": ["number", "createdBy", "items"],
+  Colaborador: ["image", "name", "department", "position"],
+  Departamento: ["color", "name", "type", "manager"],
+  Grupo: ["name", "members"],
+  Serviço: ["name", "type", "department", "price"],
   "Plano de Serviço": ["name", "price"],
   Produto: ["name", "buyValue", "sellValue"],
+  Operador: ["username", "name", "role"],
+  Cargo: ["name", "department"],
+  "Perfil de Acesso": ["name"],
 };
 
 router.post("/", async (req, res) => {

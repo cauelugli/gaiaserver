@@ -33,6 +33,8 @@ export default function CardModel({
   cardSize,
   page,
   tabIndex,
+  requestsApproverManager,
+  stockApproverManager,
   mainColor,
 }) {
   // const appData = useAppData();
@@ -52,7 +54,7 @@ export default function CardModel({
               <>
                 <Tooltip key={index} title={subItem.name || "N/A"}>
                   <Avatar
-                    src={`http://localhost:8080/static/${
+                    src={`http://localhost:3000/static/${
                       subItem.images?.[0] || ""
                     }`}
                     sx={{ width: 30, height: 30, mr: 1 }}
@@ -78,11 +80,12 @@ export default function CardModel({
     ));
   };
 
-  const usesAvatar = ["Client", "Customer"];
+  const usesAvatar = ["Client", "Customer", "User", "Operator"];
   const usesTitle = ["Job", "ServicePlan"];
   const usesNumber = ["Sale", "StockEntry"];
   const usesProduct = ["Sale", "Stock", "Product", "StockEntry"];
-  const usesColor = ["Service"];
+  const usesColor = ["Department", "Service"];
+  const usesMembers = ["Group", "Position", "Role"];
 
   return (
     <Card elevation={3}>
@@ -97,7 +100,7 @@ export default function CardModel({
             >
               <Avatar
                 alt="Imagem"
-                src={`http://localhost:8080/static/${item.image}`}
+                src={`http://localhost:3000/static/${item.image}`}
                 sx={{
                   width: 80 + cardSize * 15,
                   height: 80 + cardSize * 15,
@@ -152,7 +155,7 @@ export default function CardModel({
                   <Grid2 item key={index}>
                     <Avatar
                       alt={`Image ${index}`}
-                      src={`http://localhost:8080/static/${
+                      src={`http://localhost:3000/static/${
                         item.images[0] || ""
                       }`}
                       sx={{
@@ -164,7 +167,7 @@ export default function CardModel({
                 ))
               ) : item.images ? (
                 <Avatar
-                  src={`http://localhost:8080/static/${item.images[0] || ""}`}
+                  src={`http://localhost:3000/static/${item.images[0] || ""}`}
                   sx={{ width: 50 + cardSize * 15, height: 50 + cardSize * 15 }}
                 />
               ) : (
@@ -193,9 +196,23 @@ export default function CardModel({
               </Typography>
             </Grid2>
           )}
+          {usesMembers.includes(label) && (
+            <Grid2
+              container
+              direction="column"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                {item.name}
+              </Typography>
+            </Grid2>
+          )}
           {renderTypographies()}
           <RowButton
             userId={userId}
+            userIsRequestsApproverManager={userId === requestsApproverManager}
+            userIsStockApproverManager={userId === stockApproverManager}
             mainColor={mainColor}
             item={item}
             page={page}

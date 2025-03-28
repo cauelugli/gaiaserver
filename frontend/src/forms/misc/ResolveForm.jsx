@@ -44,6 +44,7 @@ const ResolveForm = ({
         model,
         resolution,
         id: selectedItemId,
+        resolvedBy: userId,
       });
 
       if (res.data) {

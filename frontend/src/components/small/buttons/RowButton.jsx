@@ -17,10 +17,14 @@ import EditFormModel from "../../../forms/edit/EditFormModel";
 import { modals } from "../../../options/modals";
 import rowButtonOptions from "../../../options/rowButtonOptions";
 
+import { checkAvailability } from "../../../../../controllers/functions/overallFunctions";
+
 import DeleteFormModel from "../../../forms/delete/DeleteFormModel";
 import SmallFormModel from "../../../forms/edit/SmallFormModel";
 import ResolveForm from "../../../forms/misc/ResolveForm";
+import RequestApprovalForm from "../../../forms/misc/RequestApprovalForm";
 import RequestBuyForm from "../../../forms/misc/RequestBuyForm";
+import ApproveRequestForm from "../../../forms/misc/ApproveRequestForm";
 import ArchiveItemForm from "../../../forms/misc/ArchiveItemForm";
 
 const RowButton = (props) => {
@@ -130,6 +134,40 @@ const RowButton = (props) => {
       );
       break;
 
+    case "requestApproval":
+      formComponent = (
+        <RequestApprovalForm
+          userId={props.userId}
+          selectedItemId={props.item._id || props.item.id}
+          selectedItemName={props.item.title || props.item.number}
+          model={selectedModal.model}
+          label={selectedModal.label}
+          refreshData={props.refreshData}
+          setRefreshData={props.setRefreshData}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          page={currentOption.page}
+        />
+      );
+      break;
+
+    case "approveRequest":
+      formComponent = (
+        <ApproveRequestForm
+          userId={props.userId}
+          selectedItemId={props.item._id || props.item.id}
+          selectedItemName={props.item.title || props.item.number}
+          model={selectedModal.model}
+          label={selectedModal.label}
+          refreshData={props.refreshData}
+          setRefreshData={props.setRefreshData}
+          openDialog={openDialog}
+          setOpenDialog={setOpenDialog}
+          page={currentOption.page}
+        />
+      );
+      break;
+
     case "requestBuy":
       formComponent = (
         <RequestBuyForm
@@ -169,7 +207,7 @@ const RowButton = (props) => {
     <>
       <IconButton
         onClick={(e) => (props.multiple ? "" : setAnchorEl(e.currentTarget))}
-        disabled={props.multiple || props.item.status === "Resolvido"}
+        disabled={props.multiple}
         sx={{
           "&:hover": {
             backgroundColor: props.fromCard ? "transparent" : "",
@@ -250,6 +288,25 @@ const RowButton = (props) => {
                       : "",
                   },
                 }}
+                disabled={
+                  props.item.status === "Resolvido"
+                    ? true
+                    : menuItem.label === "Resolver"
+                    ? checkAvailability("resolvableRequest", props.item.status)
+                    : menuItem.label === "Solicitar Aprovação"
+                    ? checkAvailability("approvableRequest", props.item.status)
+                    : menuItem.label === "Criar"
+                    ? checkAvailability(
+                        "creatableUsername",
+                        props.item.username
+                      )
+                    : menuItem.label === "Remover"
+                    ? checkAvailability(
+                        "removableUsername",
+                        props.item.username
+                      )
+                    : false
+                }
               >
                 <ListItemIcon
                   sx={{

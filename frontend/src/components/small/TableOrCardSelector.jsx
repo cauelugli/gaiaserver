@@ -13,6 +13,7 @@ import { Grid2, Typography } from "@mui/material";
 import { icons } from "../../icons";
 
 import MultipleSelectorButton from "./buttons/MultipleSelectorButton";
+import HighlightSelfUserButton from "./buttons/HighlightSelfUserButton";
 import HighlightArchivedButton from "./buttons/HighlightArchivedButton";
 import HighlightResolvedButton from "./buttons/HighlightResolvedButton";
 
@@ -85,6 +86,13 @@ const TableOrCardSelector = (props) => {
       alignItems="flex-end"
       sx={{ m: 0.75 }}
     >
+      {validPages.includes(props.page) && (
+        <HighlightSelfUserButton
+          mainColor={props.mainColor}
+          highlightSelfUser={props.highlightSelfUser}
+          setHighlightSelfUser={props.setHighlightSelfUser}
+        />
+      )}
       {validPages.includes(props.page) && (
         <HighlightResolvedButton
           mainColor={props.mainColor}

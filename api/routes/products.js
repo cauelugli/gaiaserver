@@ -26,17 +26,33 @@ router.post("/", async (req, res) => {
     sellValue: parseFloat(req.body.sellValue) || null,
     fields: req.body.fields || null,
     images: req.body.images || null,
+    createdBy: req.body.createdBy || null,
   });
   try {
     const savedProduct = await newProduct.save();
 
-    mainQueue.add({
-      type: "notifyAdmin",
-      data: savedProduct,
-      method: "Adicionad",
-      model: "Produto",
-      isAdmin: true,
-    });
+    const admin = await Admin.findOne({}, "config");
+
+    if (admin.config.notifyActivities === true) {
+      mainQueue.add({
+        type: "notifyAdmin",
+        data: savedProduct,
+        method: "Adicionad",
+        model: "Produto",
+        isAdmin: savedProduct.createdBy === "Admin",
+      });
+    }
+
+    const notificationList = await Notifications.findOne({});
+
+    if (notificationList) {
+      const finalList = notificationList["product"]["productIsCreated"];
+      mainQueue.add({
+        type: "productIsCreated",
+        data: savedProduct,
+        notificationList: finalList,
+      });
+    }
 
     res.status(200).json(savedProduct);
   } catch (err) {

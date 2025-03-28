@@ -32,7 +32,7 @@ export default function Files() {
     const fetchData = async () => {
       try {
         const config = await api.get("/config");
-        setConfigData(config.data.files);
+        setConfigData(config.data[0].files);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

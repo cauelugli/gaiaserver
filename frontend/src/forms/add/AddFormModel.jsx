@@ -27,6 +27,7 @@ import dayjs from "dayjs";
 export default function AddFormModel(props) {
   const [fields, setFields] = React.useState({});
   const [image, setImage] = React.useState("");
+  const [selectedMembers, setSelectedMembers] = React.useState([]);
   const [selectedProducts, setSelectedProducts] = React.useState([]);
   const [selectedServices, setSelectedServices] = React.useState([]);
   const [priceDifference, setPriceDifference] = React.useState({});
@@ -38,6 +39,22 @@ export default function AddFormModel(props) {
 
   // updating value from child modifications (basic refresh)
   React.useEffect(() => {
+    if (fields.worker) {
+      //setting Title and Description conveniently for user
+      setFields({
+        ...fields,
+        ["title"]: `${fields.service ? fields.service.name : "Serviço"} - ${
+          fields.customer ? fields.customer.name : "Cliente"
+        }`,
+        ["description"]: `${fields.worker.name}: Realizar ${
+          fields.service ? fields.service.name : "Serviço"
+        } para ${
+          fields.customer ? fields.customer.name : "Cliente"
+        } na data ${dayjs().add(1, "day").format("DD/MM/YYYY")} (${dayjs()
+          .add(1, "day")
+          .format("dddd")}).`,
+      });
+    }
     if (fields.customer) {
       // setting deliveryAddress conveniently for user
       setFields({
@@ -54,6 +71,7 @@ export default function AddFormModel(props) {
   }, [
     priceDifference,
     refreshData,
+    fields.worker,
     fields.customer,
     fields.service,
   ]);
@@ -79,6 +97,10 @@ export default function AddFormModel(props) {
       ...fields,
       [fieldName]: e.target.value,
     });
+  };
+
+  const handleMemberChange = (members) => {
+    setSelectedMembers(members);
   };
 
   const handleProductChange = (product) => {
@@ -143,6 +165,8 @@ export default function AddFormModel(props) {
       uploadResponses.push(uploadResponse.data.attachmentPath);
     }
 
+    const selectedMemberIds = selectedMembers.map((member) => member._id);
+
     try {
       const uploadResponse = await props.api.post(
         "/uploads/singleFile",
@@ -153,8 +177,12 @@ export default function AddFormModel(props) {
         sourceId: props.userId,
         fields: {
           ...fields,
+          members: fields.members?.map((member) => member._id || member.id),
           customer: fields.customer?._id,
+          department: fields.department?._id,
           service: fields.service?._id,
+          worker: fields.worker?._id,
+          seller: fields.seller?._id,
           scheduledTo: fields.scheduledTo
             ? fields.scheduledTo
             : dayjs().add(1, "day").format("DD/MM/YYYY"),
@@ -165,8 +193,11 @@ export default function AddFormModel(props) {
         label: modalOptions.label,
         image: imagePath,
         model: modalOptions.model,
+        selectedMembers: selectedMemberIds,
         selectedProducts,
         services: selectedServices?.map((service) => service._id || service.id),
+        createdBy: props.isAdmin ? "admin" : props.userId,
+        isManager: modalOptions.label === "Gerente",
         price:
           modalOptions.label === "Venda"
             ? selectedProducts
@@ -235,6 +266,7 @@ export default function AddFormModel(props) {
 
   const handlers = {
     setFields,
+    handleMemberChange,
     handleProductChange,
     handleServiceChange,
     handleFileUpload,
@@ -318,6 +350,7 @@ export default function AddFormModel(props) {
                       modalOptions,
                       handlers,
                       okToDispatch,
+                      selectedMembers,
                       selectedProducts,
                       selectedServices,
                       refreshData,

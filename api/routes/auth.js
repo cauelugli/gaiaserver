@@ -2,12 +2,16 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const Admin = require("../../models/models/Admin");
+const User = require("../../models/models/User");
 
 router.post("/", async (req, res) => {
   const { username, password } = req.body;
   try {
     let user;
-    user = await Admin.findOne({ username });
+    user = await User.findOne({ username });
+    if (!user) {
+      user = await Admin.findOne({ username });
+    }
     if (user) {
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (passwordMatch) {
@@ -28,7 +32,7 @@ router.put("/changePassFirstAccess", async (req, res) => {
   const userId = req.body.userId;
   let user;
 
-  user = await Admin.findById(userId);
+  user = await User.findById(userId);
 
   if (!user) {
     return res.status(404).json({ error: "Usuário não encontrado" });

@@ -34,6 +34,7 @@ const api = axios.create({
 });
 
 export default function AddBaseProductForm({
+  userName,
   onClose,
   refreshData,
   setRefreshData,
@@ -68,6 +69,7 @@ export default function AddBaseProductForm({
       const productResponse = await api.post("/products", {
         type,
         fields,
+        createdBy: userName,
       });
 
       if (productResponse.data) {
@@ -546,7 +548,7 @@ export default function AddBaseProductForm({
                         value={newDatePeriod}
                         onChange={(e) => setNewDatePeriod(e.target.value)}
                         size="small"
-                        sx={{ width: 120 }}
+                        sx={{width:120}}
                       >
                         <MenuItem value="day">Dias</MenuItem>
                         <MenuItem value="week">Semanas</MenuItem>
@@ -572,3 +574,4 @@ export default function AddBaseProductForm({
     </form>
   );
 }
+

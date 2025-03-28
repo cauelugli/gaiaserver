@@ -25,7 +25,7 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 dayjs.extend(isBetween);
 
-const ChartReports = ({ api, mainColor, windowSizeSetter, fromPage }) => {
+const ChartReports = ({ api, mainColor, windowSizeSetter }) => {
   const [salesData, setSalesData] = useState(null);
   const [jobsData, setJobsData] = useState(null);
   const [stockData, setStockData] = useState(null);
@@ -180,7 +180,6 @@ const ChartReports = ({ api, mainColor, windowSizeSetter, fromPage }) => {
             setGroupBy={setGroupBy}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
-            fromPage={fromPage}
           />
 
           <Grid2

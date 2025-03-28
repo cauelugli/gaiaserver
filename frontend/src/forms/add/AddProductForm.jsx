@@ -80,6 +80,7 @@ export default function AddProductForm({
         sellValue,
         fields,
         images: imagePaths,
+        createdBy: userId,
       });
 
       if (productResponse.data) {
